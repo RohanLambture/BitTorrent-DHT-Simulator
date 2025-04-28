@@ -1,0 +1,12 @@
+Number of client nodes = 8
+Number of server nodes = 4
+Number of tasks = 2
+
+Client 1: 12, 16, 24
+Client 2: 14, 18
+Client 3: 20, 10, 30
+Client 4: 22, 26
+Client 5: 18, 28
+Client 6: 16, 24
+Client 7: 20, 30
+Client 8: 24, 36

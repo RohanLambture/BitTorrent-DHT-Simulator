@@ -1,6 +1,8 @@
 // B22CS081_B22CS030
 #include "message.h"
 #include <fstream>
+#include <cmath> // For log2 and ceil functions
+#include <algorithm>
 using namespace omnetpp;
 
 class ClientNode : public cSimpleModule
@@ -20,30 +22,8 @@ public:
     bool scoresAlreadySent = false;
     int currentTask = 0;
     std::vector<int> taskSizeList;
+    std::vector<int> fingerTable;  // CHORD finger table
 
-    // virtual void initialize() override
-    // {
-    //     // Open the log file
-    //     logFile.open("output.txt", std::ios_base::app);
-    //     if (!logFile.is_open())
-    //         EV << "Error opening log file!" << "\n";
-
-    //     // Get basic parameters
-    //     numClients = par("numClients");
-
-    //     // Initialize peer score vector
-    //     peerScores.resize(numClients, 0);
-
-    //     // Extract the taskSizes array parameter
-    //     taskSizeList.clear();
-    //     taskSizeList.push_back(5);
-    //     currentTask = 0;
-
-    //     originalVector = generateRandomVector(taskSizeList[currentTask]);
-    //     selectedPeerIds = selectPeers();
-
-    //     sendSubTasks();
-    // }
 
     virtual void initialize() override
     {
@@ -57,6 +37,9 @@ public:
 
         // Initialize peer score vector
         peerScores.resize(numClients, 0);
+
+        // Initialize finger table for CHORD routing
+        initializeFingerTable();
 
         // Extract the taskSizes array parameter
         taskSizeList.clear();
@@ -89,58 +72,57 @@ public:
         sendSubTasks();
     }
 
+    void initializeFingerTable() {
+        int nodeId = getIndex();
+        int numFingers = ceil(log2(numClients));
+        fingerTable.resize(numFingers);
+        
+        for (int i = 0; i < numFingers; i++) {
+            // For each finger i, calculate (n + 2^i) % numClients
+            fingerTable[i] = (nodeId + (1 << i)) % numClients;
+            
+            if (logFile.is_open())
+                logFile << "Client " << nodeId << " finger[" << i << "] points to " << fingerTable[i] << endl;
+            
+            EV << "Client " << nodeId << " finger[" << i << "] points to " << fingerTable[i] << endl;
+        }
+    }
+
+    int findNextHop(int targetId) {
+        int nodeId = getIndex();
+        
+        // If the target is the current node, return self
+        if (targetId == nodeId) return nodeId;
+        
+        // If target is between current node and successor, route to successor
+        int successor = (nodeId + 1) % numClients;
+        if (isInRange(targetId, nodeId, successor)) return successor;
+        
+        // Otherwise, find the closest preceding finger
+        for (int i = fingerTable.size() - 1; i >= 0; i--) {
+            int fingerId = fingerTable[i];
+            if (isInRange(fingerId, nodeId, targetId)) {
+                return fingerId;
+            }
+        }
+        
+        // Fallback to immediate successor
+        return successor;
+    }
+
+    bool isInRange(int id, int start, int end) {
+        // Check if id is in the range (start, end)
+        // Handle wrap-around case in the ring
+        if (start < end)
+            return (id > start && id <= end);
+        else  // wrap around case
+            return (id > start || id <= end);
+    }
+
     virtual void finish() override
     {
         logFile.close();
     }
-
-    // virtual void handleMessage(cMessage *msg) override
-    // {
-    //     // Check if this is a task message from another peer
-    //     PeerTaskMsg *peerMsg = dynamic_cast<PeerTaskMsg *>(msg);
-    //     if (peerMsg)
-    //     {
-    //         if (peerMsg->isResponse)
-    //         {
-    //             // This is a response to a task we sent
-    //             handlePeerResponse(peerMsg);
-    //         }
-    //         else
-    //         {
-    //             // This is a new task to process
-    //             processPeerTask(peerMsg);
-    //         }
-    //         return;
-    //     }
-
-    //     // Check if this is a gossip message
-    //     gossipMessage *gossipMsg = dynamic_cast<gossipMessage *>(msg);
-    //     if (gossipMsg)
-    //     {
-    //         handleGossipMessage(gossipMsg);
-    //         return;
-    //     }
-
-    //     if (scoresAlreadySent && currentTask < int(taskSizeList.size()) - 1)
-    //     {
-    //         if (logFile.is_open())
-    //             logFile << "Client " << getIndex() << " finished current task, ready for next" << endl;
-
-    //         EV << "Client " << getIndex() << " finished current task, ready for next" << endl;
-
-    //         // Schedule a new task after a delay
-    //         cMessage *startNewTaskMsg = new cMessage("startNewTask");
-    //         scheduleAt(simTime() + 1.0, startNewTaskMsg);
-    //     }
-
-    //     // Add to handleMessage(), at the beginning
-    //     if (strcmp(msg->getName(), "startNewTask") == 0)
-    //     {
-    //         startNewTask();
-    //         delete msg;
-    //         return;
-    //     }
-    // }
 
     virtual void handleMessage(cMessage *msg) override
     {
@@ -191,33 +173,26 @@ public:
         }
     }
 
-    // void handlePeerResponse(PeerTaskMsg *msg)
-    // {
-    //     peerResponses[msg->subtaskId][msg->sourceClientId] = msg->result;
-
-    //     if (logFile.is_open())
-    //         logFile << msg->currentTime << " Client " << getIndex() << " : Received result "
-    //                 << msg->result << " from Client " << msg->sourceClientId
-    //                 << " for subtask " << msg->subtaskId << endl;
-
-    //     EV << msg->currentTime << " Client " << getIndex() << " : Received result "
-    //        << msg->result << " from Client " << msg->sourceClientId
-    //        << " for subtask " << msg->subtaskId << endl;
-
-    //     responses++;
-
-    //     // Check if we've received all responses
-    //     if (responses == subTask * selectedPeerIds.size() && !scoresAlreadySent)
-    //     {
-    //         processResponses();
-    //         sendScores();
-    //         scoresAlreadySent = true;
-    //     }
-
-    //     delete msg;
-    // }
     void handlePeerResponse(PeerTaskMsg *msg)
     {
+        // If message is being routed and not for us, forward it
+        if (msg->isRouting && msg->destClientId != getIndex()) {
+            int nextHop = findNextHop(msg->destClientId);
+            
+            // Create a copy and forward
+            PeerTaskMsg *forwardMsg = new PeerTaskMsg(*msg);
+            send(forwardMsg, "out", nextHop);
+            
+            if (logFile.is_open())
+                logFile << simTime() << " Client " << getIndex()
+                        << " : Forwarding response for subtask " << msg->subtaskId 
+                        << " from Client " << msg->sourceClientId 
+                        << " to Client " << msg->destClientId << endl;
+            
+            delete msg;
+            return;
+        }
+
         peerResponses[msg->subtaskId][msg->sourceClientId] = msg->result;
 
         if (logFile.is_open())
@@ -241,12 +216,37 @@ public:
 
         delete msg;
     }
+
     void processPeerTask(PeerTaskMsg *msg)
     {
+        // If this message is being routed and not meant for us, forward it
+        if (msg->isRouting && msg->destClientId != getIndex()) {
+            // Find next hop for the destination
+            int nextHop = findNextHop(msg->destClientId);
+            
+            // Forward the message
+            PeerTaskMsg *forwardMsg = new PeerTaskMsg(*msg);  // Create a copy
+            send(forwardMsg, "out", nextHop);
+            
+            if (logFile.is_open())
+                logFile << simTime() << " Client " << getIndex()
+                        << " : Forwarding subtask " << msg->subtaskId 
+                        << " from Client " << msg->sourceClientId 
+                        << " to Client " << msg->destClientId
+                        << " via hop " << nextHop << endl;
+            
+            EV << "Client " << getIndex() << " forwarding message from "
+               << msg->sourceClientId << " to " << msg->destClientId
+               << " via hop " << nextHop << endl;
+               
+            delete msg;
+            return;
+        }
+        
         // Process the task (find max element)
         const std::vector<int> &elements = msg->elements;
         int result = *std::max_element(elements.begin(), elements.end());
-
+        
         // Create response message
         PeerTaskMsg *response = new PeerTaskMsg();
         response->sourceClientId = getIndex();
@@ -255,19 +255,25 @@ public:
         response->result = result;
         response->isResponse = true;
         response->currentTime = simTime();
-
+        
         if (logFile.is_open())
             logFile << response->currentTime << " Client " << getIndex()
                     << " : Processing subtask from Client " << msg->sourceClientId
                     << ", sending result " << result << endl;
-
+        
         EV << response->currentTime << " Client " << getIndex()
            << " : Processing subtask from Client " << msg->sourceClientId
            << ", sending result " << result << endl;
-
-        // Send response back to the requesting peer
-        send(response, "out", msg->sourceClientId);
-
+        
+        // Use CHORD routing for the response as well
+        int nextHop = findNextHop(msg->sourceClientId);
+        if (nextHop != msg->sourceClientId) {
+            response->isRouting = true;
+        }
+        
+        // Send response back to the requesting peer via next hop
+        send(response, "out", nextHop);
+        
         delete msg;
     }
 
@@ -313,89 +319,6 @@ public:
         return result;
     }
 
-    // void sendSubTasks()
-    // {
-    //     EV << "Client " << getIndex() << " sending subtasks to peers" << endl;
-
-    //     int vectorSize = originalVector.size();
-
-    //     // Calculate the number of subtasks (pairs of elements)
-    //     if (vectorSize % 2 == 0)
-    //     {
-    //         subTask = vectorSize / 2;
-
-    //         // Process pairs of elements
-    //         for (int i = 0; i < vectorSize; i += 2)
-    //         {
-    //             std::vector<int> pair = {originalVector[i], originalVector[i + 1]};
-    //             int subtaskId = i / 2;
-
-    //             for (int j = 0; j < selectedPeerIds.size(); j++)
-    //             {
-    //                 PeerTaskMsg *msgToPeer = new PeerTaskMsg();
-    //                 msgToPeer->sourceClientId = getIndex();
-    //                 msgToPeer->destClientId = selectedPeerIds[j];
-    //                 msgToPeer->subtaskId = subtaskId;
-    //                 msgToPeer->elements = pair;
-    //                 msgToPeer->isResponse = false;
-    //                 msgToPeer->currentTime = simTime();
-
-    //                 send(msgToPeer, "out", selectedPeerIds[j]);
-
-    //                 if (logFile.is_open())
-    //                     logFile << msgToPeer->currentTime << " Client " << getIndex()
-    //                             << " : Sent subtask " << subtaskId << " to Client "
-    //                             << selectedPeerIds[j] << endl;
-    //             }
-    //         }
-    //     }
-    //     else
-    //     {
-    //         // For odd-sized vectors, handle pairs first
-    //         int pairsCount = (vectorSize - 3) / 2;
-    //         subTask = pairsCount + 1; // Regular pairs + the final triplet as one subtask
-
-    //         // Process regular pairs
-    //         for (int i = 0; i < 2 * pairsCount; i += 2)
-    //         {
-    //             std::vector<int> pair = {originalVector[i], originalVector[i + 1]};
-    //             int subtaskId = i / 2;
-
-    //             for (int j = 0; j < selectedPeerIds.size(); j++)
-    //             {
-    //                 PeerTaskMsg *msgToPeer = new PeerTaskMsg();
-    //                 msgToPeer->sourceClientId = getIndex();
-    //                 msgToPeer->destClientId = selectedPeerIds[j];
-    //                 msgToPeer->subtaskId = subtaskId;
-    //                 msgToPeer->elements = pair;
-    //                 msgToPeer->isResponse = false;
-    //                 msgToPeer->currentTime = simTime();
-
-    //                 send(msgToPeer, "out", selectedPeerIds[j]);
-    //             }
-    //         }
-
-    //         // Handle the last three elements as a single subtask
-    //         int lastSubtaskId = pairsCount;
-    //         std::vector<int> lastGroup = {
-    //             originalVector[vectorSize - 3],
-    //             originalVector[vectorSize - 2],
-    //             originalVector[vectorSize - 1]};
-
-    //         for (int j = 0; j < selectedPeerIds.size(); j++)
-    //         {
-    //             PeerTaskMsg *msgToPeer = new PeerTaskMsg();
-    //             msgToPeer->sourceClientId = getIndex();
-    //             msgToPeer->destClientId = selectedPeerIds[j];
-    //             msgToPeer->subtaskId = lastSubtaskId;
-    //             msgToPeer->elements = lastGroup;
-    //             msgToPeer->isResponse = false;
-    //             msgToPeer->currentTime = simTime();
-
-    //             send(msgToPeer, "out", selectedPeerIds[j]);
-    //         }
-    //     }
-    // }
 
     void sendSubTasks()
     {
@@ -452,45 +375,8 @@ public:
             // Increment workload for this client
             clientWorkload[targetClientId]++;
 
-            // Don't send to self - create a local subtask result instead
-            if (targetClientId == getIndex())
-            {
-                // Process locally
-                int result = *std::max_element(subtaskElements.begin(), subtaskElements.end());
-
-                // Store the result directly
-                peerResponses[subtaskId][getIndex()] = result;
-
-                if (logFile.is_open())
-                    logFile << simTime() << " Client " << getIndex()
-                            << " : Processing subtask " << subtaskId << " locally, result: " << result << endl;
-
-                EV << simTime() << " Client " << getIndex()
-                   << " : Processing subtask " << subtaskId << " locally, result: " << result << endl;
-
-                // Count this as a response
-                responses++;
-            }
-            else
-            {
-                // Send to the target client
-                PeerTaskMsg *msgToPeer = new PeerTaskMsg();
-                msgToPeer->sourceClientId = getIndex();
-                msgToPeer->destClientId = targetClientId;
-                msgToPeer->subtaskId = subtaskId;
-                msgToPeer->elements = subtaskElements;
-                msgToPeer->isResponse = false;
-                msgToPeer->currentTime = simTime();
-
-                send(msgToPeer, "out", targetClientId);
-
-                if (logFile.is_open())
-                    logFile << msgToPeer->currentTime << " Client " << getIndex()
-                            << " : Sent subtask " << subtaskId << " to Client " << targetClientId << endl;
-
-                EV << "Client " << getIndex() << " sent subtask " << subtaskId
-                   << " with " << subtaskElements.size() << " elements to client " << targetClientId << endl;
-            }
+            // Send the subtask using CHORD routing
+            sendSubTask(targetClientId, subtaskId, subtaskElements);
         }
 
         // Log the workload distribution
@@ -500,14 +386,49 @@ public:
             EV << "Client " << i << ": " << clientWorkload[i] << " tasks, ";
         }
         EV << endl;
+    }
 
-        // Check if all tasks were processed locally
-        if (responses == numSubtasks)
-        {
-            processResponses();
-            sendScores();
-            scoresAlreadySent = true;
+    void sendSubTask(int targetClientId, int subtaskId, std::vector<int>& subtaskElements) {
+        // If target is self, process locally
+        if (targetClientId == getIndex()) {
+            int result = *std::max_element(subtaskElements.begin(), subtaskElements.end());
+            peerResponses[subtaskId][getIndex()] = result;
+            
+            if (logFile.is_open())
+                logFile << simTime() << " Client " << getIndex()
+                        << " : Processing subtask " << subtaskId << " locally, result: " << result << endl;
+            
+            EV << simTime() << " Client " << getIndex()
+               << " : Processing subtask " << subtaskId << " locally, result: " << result << endl;
+            
+            responses++;
+            return;
         }
+        
+        // Find next hop using CHORD routing
+        int nextHop = findNextHop(targetClientId);
+        
+        // Create the message
+        PeerTaskMsg *msgToPeer = new PeerTaskMsg();
+        msgToPeer->sourceClientId = getIndex();
+        msgToPeer->destClientId = targetClientId;  // Final destination
+        msgToPeer->subtaskId = subtaskId;
+        msgToPeer->elements = subtaskElements;
+        msgToPeer->isResponse = false;
+        msgToPeer->currentTime = simTime();
+        msgToPeer->isRouting = nextHop != targetClientId;  // Set routing flag if not direct
+        
+        // Send message to next hop
+        send(msgToPeer, "out", nextHop);
+        
+        if (logFile.is_open())
+            logFile << msgToPeer->currentTime << " Client " << getIndex()
+                    << " : Sent subtask " << subtaskId << " to Client " << targetClientId 
+                    << " via hop " << nextHop << endl;
+        
+        EV << "Client " << getIndex() << " sent subtask " << subtaskId
+           << " with " << subtaskElements.size() << " elements to client " << targetClientId
+           << " via hop " << nextHop << endl;
     }
 
     void processResponses()
@@ -602,12 +523,18 @@ public:
             msgToClient->serverScores = this->peerScores; // Reusing the serverScores field
             msgToClient->currentTime = simTime();
 
-            send(msgToClient, "gout", i);
+            // Use CHORD routing for gossip messages too
+            int nextHop = findNextHop(i);
+            msgToClient->isRouting = nextHop != i;
+            
+            send(msgToClient, "gout", nextHop);
 
             if (logFile.is_open())
-                logFile << "Client " << getIndex() << " sent peer scores to client " << i << endl;
+                logFile << "Client " << getIndex() << " sent peer scores to client " << i
+                        << " via hop " << nextHop << endl;
 
-            EV << "Sent peer scores from client " << getIndex() << " to client " << i << endl;
+            EV << "Sent peer scores from client " << getIndex() << " to client " << i
+               << " via hop " << nextHop << endl;
         }
     }
 
@@ -638,39 +565,6 @@ public:
 
         sendSubTasks();
     }
-
-    // void startNewTask()
-    // {
-    //     responses = 0;
-    //     subTask = 0;
-    //     scoresAlreadySent = false;
-    //     peerResponses.clear();
-    //     subtaskResult.clear();
-
-    //     selectedPeerIds = selectTopPeers();
-
-    //     if (logFile.is_open())
-    //         logFile << "Client " << getIndex() << " is starting a new task" << endl;
-
-    //     EV << "Client " << getIndex() << " is starting a new task" << endl;
-
-    //     for (int id : selectedPeerIds)
-    //     {
-    //         if (logFile.is_open())
-    //             logFile << "Client " << getIndex() << " selected peer " << id << " ";
-
-    //         EV << id << " ";
-    //     }
-
-    //     if (logFile.is_open())
-    //         logFile << endl;
-
-    //     EV << endl;
-
-    //     currentTask = currentTask + 1;
-    //     originalVector = generateRandomVector(taskSizeList[currentTask]);
-    //     sendSubTasks();
-    // }
 
     std::vector<int> selectTopPeers()
     {

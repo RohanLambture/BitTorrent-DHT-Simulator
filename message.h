@@ -18,21 +18,26 @@ public:
     omnetpp::simtime_t currentTime;
 };
 
-class PeerTaskMsg : public omnetpp::cMessage {
-    public:
-        int sourceClientId = 0;
-        int destClientId = 0;
-        int subtaskId = 0;
-        std::vector<int> elements;
-        int result = -1;
-        bool isResponse = false;
-        omnetpp::simtime_t currentTime;
-    };
 
-class gossipMessage : public omnetpp::cMessage{
+// Add isRouting field to your message class
+class PeerTaskMsg : public omnetpp::cMessage {
 public:
     int sourceClientId;
     int destClientId;
-    std::vector<float>serverScores;
+    int subtaskId;
+    std::vector<int> elements;
+    int result;
+    bool isResponse;
     omnetpp::simtime_t currentTime;
+    bool isRouting = false;  // New field to indicate if message is being routed
+};
+
+// Make sure to add isRouting to gossipMessage class as well
+class gossipMessage : public omnetpp ::cMessage {
+public:
+    int sourceClientId;
+    int destClientId;
+    std::vector<float> serverScores;
+    omnetpp::simtime_t currentTime;
+    bool isRouting = false;  // New field for routing
 };

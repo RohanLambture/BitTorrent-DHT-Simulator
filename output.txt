@@ -2623,3 +2623,608 @@ Client 9 sent peer scores to client 8
 0.2 Client 6 : Received gossip message from client 9
 0.2 Client 7 : Received gossip message from client 9
 0.2 Client 8 : Received gossip message from client 9
+Client 0 dividing task into 2 subtasks with 2 elements each
+0 Client 0 : Sent subtask 421 to Client 1
+0 Client 0 : Sent subtask 362 to Client 2
+Client 1 dividing task into 2 subtasks with 2 elements each
+0 Client 1 : Sent subtask 429 to Client 9
+0 Client 1 : Sent subtask 782 to Client 2
+Client 2 dividing task into 2 subtasks with 2 elements each
+0 Client 2 : Sent subtask 456 to Client 6
+0 Client 2 : Sent subtask 11 to Client 1
+Client 3 dividing task into 2 subtasks with 2 elements each
+0 Client 3 : Sent subtask 370 to Client 0
+0 Client 3 : Processing subtask 413 locally, result: 74
+Client 4 dividing task into 2 subtasks with 2 elements each
+0 Client 4 : Sent subtask 305 to Client 5
+0 Client 4 : Sent subtask 925 to Client 5
+Client 5 dividing task into 2 subtasks with 2 elements each
+0 Client 5 : Processing subtask 895 locally, result: 85
+0 Client 5 : Sent subtask 582 to Client 2
+Client 6 dividing task into 2 subtasks with 2 elements each
+0 Client 6 : Processing subtask 276 locally, result: 46
+0 Client 6 : Sent subtask 178 to Client 8
+Client 7 dividing task into 2 subtasks with 2 elements each
+0 Client 7 : Sent subtask 368 to Client 8
+0 Client 7 : Sent subtask 739 to Client 9
+Client 8 dividing task into 2 subtasks with 2 elements each
+0 Client 8 : Sent subtask 601 to Client 1
+0 Client 8 : Sent subtask 97 to Client 7
+Client 9 dividing task into 2 subtasks with 2 elements each
+0 Client 9 : Processing subtask 619 locally, result: 18
+0 Client 9 : Sent subtask 440 to Client 0
+0.1 Client 1 : Processing subtask from Client 0, sending result 87
+0.1 Client 2 : Processing subtask from Client 0, sending result 78
+0.1 Client 9 : Processing subtask from Client 1, sending result 91
+0.1 Client 2 : Processing subtask from Client 1, sending result 64
+0.1 Client 6 : Processing subtask from Client 2, sending result 63
+0.1 Client 1 : Processing subtask from Client 2, sending result 68
+0.1 Client 0 : Processing subtask from Client 3, sending result 43
+0.1 Client 5 : Processing subtask from Client 4, sending result 92
+0.1 Client 5 : Processing subtask from Client 4, sending result 81
+0.1 Client 2 : Processing subtask from Client 5, sending result 37
+0.1 Client 8 : Processing subtask from Client 6, sending result 68
+0.1 Client 8 : Processing subtask from Client 7, sending result 89
+0.1 Client 9 : Processing subtask from Client 7, sending result 52
+0.1 Client 1 : Processing subtask from Client 8, sending result 27
+0.1 Client 7 : Processing subtask from Client 8, sending result 95
+0.1 Client 0 : Processing subtask from Client 9, sending result 93
+0.1 Client 0 : Received result 87 from Client 1 for subtask 421
+0.1 Client 0 : Received result 78 from Client 2 for subtask 362
+Client 0 received responses from peers
+Client 0 peer scores: 0, 0.5, 0.5, 0, 0, 0, 0, 0, 0, 0, 
+Client 0 final result: 87
+Client 0 sending scores to other clients
+Client 0 sent peer scores to client 1
+Client 0 sent peer scores to client 2
+Client 0 sent peer scores to client 3
+Client 0 sent peer scores to client 4
+Client 0 sent peer scores to client 5
+Client 0 sent peer scores to client 6
+Client 0 sent peer scores to client 7
+Client 0 sent peer scores to client 8
+Client 0 sent peer scores to client 9
+0.1 Client 1 : Received result 91 from Client 9 for subtask 429
+0.1 Client 1 : Received result 64 from Client 2 for subtask 782
+Client 1 received responses from peers
+Client 1 peer scores: 0, 0, 0.5, 0, 0, 0, 0, 0, 0, 0.5, 
+Client 1 final result: 91
+Client 1 sending scores to other clients
+Client 1 sent peer scores to client 0
+Client 1 sent peer scores to client 2
+Client 1 sent peer scores to client 3
+Client 1 sent peer scores to client 4
+Client 1 sent peer scores to client 5
+Client 1 sent peer scores to client 6
+Client 1 sent peer scores to client 7
+Client 1 sent peer scores to client 8
+Client 1 sent peer scores to client 9
+0.1 Client 2 : Received result 63 from Client 6 for subtask 456
+0.1 Client 2 : Received result 68 from Client 1 for subtask 11
+Client 2 received responses from peers
+Client 2 peer scores: 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 
+Client 2 final result: 68
+Client 2 sending scores to other clients
+Client 2 sent peer scores to client 0
+Client 2 sent peer scores to client 1
+Client 2 sent peer scores to client 3
+Client 2 sent peer scores to client 4
+Client 2 sent peer scores to client 5
+Client 2 sent peer scores to client 6
+Client 2 sent peer scores to client 7
+Client 2 sent peer scores to client 8
+Client 2 sent peer scores to client 9
+0.1 Client 3 : Received result 43 from Client 0 for subtask 370
+Client 3 received responses from peers
+Client 3 peer scores: 0.5, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, 
+Client 3 final result: 74
+Client 3 sending scores to other clients
+Client 3 sent peer scores to client 0
+Client 3 sent peer scores to client 1
+Client 3 sent peer scores to client 2
+Client 3 sent peer scores to client 4
+Client 3 sent peer scores to client 5
+Client 3 sent peer scores to client 6
+Client 3 sent peer scores to client 7
+Client 3 sent peer scores to client 8
+Client 3 sent peer scores to client 9
+0.1 Client 4 : Received result 92 from Client 5 for subtask 305
+0.1 Client 4 : Received result 81 from Client 5 for subtask 925
+Client 4 received responses from peers
+Client 4 peer scores: 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 
+Client 4 final result: 92
+Client 4 sending scores to other clients
+Client 4 sent peer scores to client 0
+Client 4 sent peer scores to client 1
+Client 4 sent peer scores to client 2
+Client 4 sent peer scores to client 3
+Client 4 sent peer scores to client 5
+Client 4 sent peer scores to client 6
+Client 4 sent peer scores to client 7
+Client 4 sent peer scores to client 8
+Client 4 sent peer scores to client 9
+0.1 Client 5 : Received result 37 from Client 2 for subtask 582
+Client 5 received responses from peers
+Client 5 peer scores: 0, 0, 0.5, 0, 0, 0.5, 0, 0, 0, 0, 
+Client 5 final result: 85
+Client 5 sending scores to other clients
+Client 5 sent peer scores to client 0
+Client 5 sent peer scores to client 1
+Client 5 sent peer scores to client 2
+Client 5 sent peer scores to client 3
+Client 5 sent peer scores to client 4
+Client 5 sent peer scores to client 6
+Client 5 sent peer scores to client 7
+Client 5 sent peer scores to client 8
+Client 5 sent peer scores to client 9
+0.1 Client 6 : Received result 68 from Client 8 for subtask 178
+Client 6 received responses from peers
+Client 6 peer scores: 0, 0, 0, 0, 0, 0, 0.5, 0, 0.5, 0, 
+Client 6 final result: 68
+Client 6 sending scores to other clients
+Client 6 sent peer scores to client 0
+Client 6 sent peer scores to client 1
+Client 6 sent peer scores to client 2
+Client 6 sent peer scores to client 3
+Client 6 sent peer scores to client 4
+Client 6 sent peer scores to client 5
+Client 6 sent peer scores to client 7
+Client 6 sent peer scores to client 8
+Client 6 sent peer scores to client 9
+0.1 Client 7 : Received result 89 from Client 8 for subtask 368
+0.1 Client 7 : Received result 52 from Client 9 for subtask 739
+Client 7 received responses from peers
+Client 7 peer scores: 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 
+Client 7 final result: 89
+Client 7 sending scores to other clients
+Client 7 sent peer scores to client 0
+Client 7 sent peer scores to client 1
+Client 7 sent peer scores to client 2
+Client 7 sent peer scores to client 3
+Client 7 sent peer scores to client 4
+Client 7 sent peer scores to client 5
+Client 7 sent peer scores to client 6
+Client 7 sent peer scores to client 8
+Client 7 sent peer scores to client 9
+0.1 Client 8 : Received result 27 from Client 1 for subtask 601
+0.1 Client 8 : Received result 95 from Client 7 for subtask 97
+Client 8 received responses from peers
+Client 8 peer scores: 0, 0.5, 0, 0, 0, 0, 0, 0.5, 0, 0, 
+Client 8 final result: 95
+Client 8 sending scores to other clients
+Client 8 sent peer scores to client 0
+Client 8 sent peer scores to client 1
+Client 8 sent peer scores to client 2
+Client 8 sent peer scores to client 3
+Client 8 sent peer scores to client 4
+Client 8 sent peer scores to client 5
+Client 8 sent peer scores to client 6
+Client 8 sent peer scores to client 7
+Client 8 sent peer scores to client 9
+0.1 Client 9 : Received result 93 from Client 0 for subtask 440
+Client 9 received responses from peers
+Client 9 peer scores: 0.5, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 
+Client 9 final result: 93
+Client 9 sending scores to other clients
+Client 9 sent peer scores to client 0
+Client 9 sent peer scores to client 1
+Client 9 sent peer scores to client 2
+Client 9 sent peer scores to client 3
+Client 9 sent peer scores to client 4
+Client 9 sent peer scores to client 5
+Client 9 sent peer scores to client 6
+Client 9 sent peer scores to client 7
+Client 9 sent peer scores to client 8
+0.2 Client 1 : Received gossip message from client 0
+0.2 Client 2 : Received gossip message from client 0
+0.2 Client 3 : Received gossip message from client 0
+0.2 Client 4 : Received gossip message from client 0
+Client 0 dividing task into 2 subtasks with 2 elements each
+0 Client 0 : Sent subtask 421 to Client 1
+0 Client 0 : Sent subtask 362 to Client 2
+Client 1 dividing task into 2 subtasks with 2 elements each
+0 Client 1 : Sent subtask 429 to Client 9
+0 Client 1 : Sent subtask 782 to Client 2
+Client 2 dividing task into 2 subtasks with 2 elements each
+0 Client 2 : Sent subtask 456 to Client 6
+0 Client 2 : Sent subtask 11 to Client 1
+Client 3 dividing task into 2 subtasks with 2 elements each
+0 Client 3 : Sent subtask 370 to Client 0
+0 Client 3 : Processing subtask 413 locally, result: 74
+Client 4 dividing task into 2 subtasks with 2 elements each
+0 Client 4 : Sent subtask 305 to Client 5
+0 Client 4 : Sent subtask 925 to Client 5
+Client 5 dividing task into 2 subtasks with 2 elements each
+0 Client 5 : Processing subtask 895 locally, result: 85
+0 Client 5 : Sent subtask 582 to Client 2
+Client 6 dividing task into 2 subtasks with 2 elements each
+0 Client 6 : Processing subtask 276 locally, result: 46
+0 Client 6 : Sent subtask 178 to Client 8
+Client 7 dividing task into 2 subtasks with 2 elements each
+0 Client 7 : Sent subtask 368 to Client 8
+0 Client 7 : Sent subtask 739 to Client 9
+Client 8 dividing task into 2 subtasks with 2 elements each
+0 Client 8 : Sent subtask 601 to Client 1
+0 Client 8 : Sent subtask 97 to Client 7
+Client 9 dividing task into 2 subtasks with 2 elements each
+0 Client 9 : Processing subtask 619 locally, result: 18
+0 Client 9 : Sent subtask 440 to Client 0
+Client 0 dividing task into 2 subtasks with 2 elements each
+0 Client 0 : Sent subtask 421 to Client 1
+0 Client 0 : Sent subtask 362 to Client 2
+Client 1 dividing task into 2 subtasks with 2 elements each
+0 Client 1 : Sent subtask 429 to Client 9
+0 Client 1 : Sent subtask 782 to Client 2
+Client 2 dividing task into 2 subtasks with 2 elements each
+0 Client 2 : Sent subtask 456 to Client 6
+0 Client 2 : Sent subtask 11 to Client 1
+Client 3 dividing task into 2 subtasks with 2 elements each
+0 Client 3 : Sent subtask 370 to Client 0
+0 Client 3 : Processing subtask 413 locally, result: 74
+Client 4 dividing task into 2 subtasks with 2 elements each
+0 Client 4 : Sent subtask 305 to Client 5
+0 Client 4 : Sent subtask 925 to Client 5
+Client 5 dividing task into 2 subtasks with 2 elements each
+0 Client 5 : Processing subtask 895 locally, result: 85
+0 Client 5 : Sent subtask 582 to Client 2
+Client 6 dividing task into 2 subtasks with 2 elements each
+0 Client 6 : Processing subtask 276 locally, result: 46
+0 Client 6 : Sent subtask 178 to Client 8
+Client 7 dividing task into 2 subtasks with 2 elements each
+0 Client 7 : Sent subtask 368 to Client 8
+0 Client 7 : Sent subtask 739 to Client 9
+Client 8 dividing task into 2 subtasks with 2 elements each
+0 Client 8 : Sent subtask 601 to Client 1
+0 Client 8 : Sent subtask 97 to Client 7
+Client 9 dividing task into 2 subtasks with 2 elements each
+0 Client 9 : Processing subtask 619 locally, result: 18
+0 Client 9 : Sent subtask 440 to Client 0
+0.1 Client 1 : Processing subtask from Client 0, sending result 87
+0.1 Client 2 : Processing subtask from Client 0, sending result 78
+0.1 Client 9 : Processing subtask from Client 1, sending result 91
+0.1 Client 2 : Processing subtask from Client 1, sending result 64
+0.1 Client 6 : Processing subtask from Client 2, sending result 63
+0.1 Client 1 : Processing subtask from Client 2, sending result 68
+0.1 Client 0 : Processing subtask from Client 3, sending result 43
+0.1 Client 5 : Processing subtask from Client 4, sending result 92
+0.1 Client 5 : Processing subtask from Client 4, sending result 81
+Client 0 finger[0] points to 1
+Client 0 finger[1] points to 2
+Client 0 finger[2] points to 4
+Client 0 finger[3] points to 8
+Client 0 dividing task into 2 subtasks with 2 elements each
+0 Client 0 : Sent subtask 421 to Client 1 via hop 1
+0 Client 0 : Sent subtask 362 to Client 2 via hop 2
+Client 1 finger[0] points to 2
+Client 1 finger[1] points to 3
+Client 1 finger[2] points to 5
+Client 1 finger[3] points to 9
+Client 1 dividing task into 2 subtasks with 2 elements each
+0 Client 1 : Sent subtask 429 to Client 9 via hop 9
+0 Client 1 : Sent subtask 782 to Client 2 via hop 2
+Client 2 finger[0] points to 3
+Client 2 finger[1] points to 4
+Client 2 finger[2] points to 6
+Client 2 finger[3] points to 0
+Client 2 dividing task into 2 subtasks with 2 elements each
+0 Client 2 : Sent subtask 456 to Client 6 via hop 6
+0 Client 2 : Sent subtask 11 to Client 1 via hop 0
+Client 3 finger[0] points to 4
+Client 3 finger[1] points to 5
+Client 3 finger[2] points to 7
+Client 3 finger[3] points to 1
+Client 3 dividing task into 2 subtasks with 2 elements each
+0 Client 3 : Sent subtask 370 to Client 0 via hop 7
+0 Client 3 : Processing subtask 413 locally, result: 74
+Client 4 finger[0] points to 5
+Client 4 finger[1] points to 6
+Client 4 finger[2] points to 8
+Client 4 finger[3] points to 2
+Client 4 dividing task into 2 subtasks with 2 elements each
+0 Client 4 : Sent subtask 305 to Client 5 via hop 5
+0 Client 4 : Sent subtask 925 to Client 5 via hop 5
+Client 5 finger[0] points to 6
+Client 5 finger[1] points to 7
+Client 5 finger[2] points to 9
+Client 5 finger[3] points to 3
+Client 5 dividing task into 2 subtasks with 2 elements each
+0 Client 5 : Processing subtask 895 locally, result: 85
+0 Client 5 : Sent subtask 582 to Client 2 via hop 9
+Client 6 finger[0] points to 7
+Client 6 finger[1] points to 8
+Client 6 finger[2] points to 0
+Client 6 finger[3] points to 4
+Client 6 dividing task into 2 subtasks with 2 elements each
+0 Client 6 : Processing subtask 276 locally, result: 46
+0 Client 6 : Sent subtask 178 to Client 8 via hop 8
+Client 7 finger[0] points to 8
+Client 7 finger[1] points to 9
+Client 7 finger[2] points to 1
+Client 7 finger[3] points to 5
+Client 7 dividing task into 2 subtasks with 2 elements each
+0 Client 7 : Sent subtask 368 to Client 8 via hop 8
+0 Client 7 : Sent subtask 739 to Client 9 via hop 9
+Client 8 finger[0] points to 9
+Client 8 finger[1] points to 0
+Client 8 finger[2] points to 2
+Client 8 finger[3] points to 6
+Client 8 dividing task into 2 subtasks with 2 elements each
+0 Client 8 : Sent subtask 601 to Client 1 via hop 0
+0 Client 8 : Sent subtask 97 to Client 7 via hop 6
+Client 9 finger[0] points to 0
+Client 9 finger[1] points to 1
+Client 9 finger[2] points to 3
+Client 9 finger[3] points to 7
+Client 9 dividing task into 2 subtasks with 2 elements each
+0 Client 9 : Processing subtask 619 locally, result: 18
+0 Client 9 : Sent subtask 440 to Client 0 via hop 0
+0.1 Client 1 : Processing subtask from Client 0, sending result 87
+0.1 Client 2 : Processing subtask from Client 0, sending result 78
+0.1 Client 9 : Processing subtask from Client 1, sending result 91
+0.1 Client 2 : Processing subtask from Client 1, sending result 64
+0.1 Client 6 : Processing subtask from Client 2, sending result 63
+0.1 Client 0 : Forwarding subtask 11 from Client 2 to Client 1 via hop 1
+0.1 Client 7 : Forwarding subtask 370 from Client 3 to Client 0 via hop 9
+0.1 Client 5 : Processing subtask from Client 4, sending result 92
+0.1 Client 5 : Processing subtask from Client 4, sending result 81
+0.1 Client 9 : Forwarding subtask 582 from Client 5 to Client 2 via hop 1
+0.1 Client 8 : Processing subtask from Client 6, sending result 68
+0.1 Client 8 : Processing subtask from Client 7, sending result 89
+0.1 Client 9 : Processing subtask from Client 7, sending result 52
+0.1 Client 0 : Forwarding subtask 601 from Client 8 to Client 1 via hop 1
+0.1 Client 6 : Forwarding subtask 97 from Client 8 to Client 7 via hop 7
+0.1 Client 0 : Processing subtask from Client 9, sending result 93
+0.2 Client 9 : Forwarding response for subtask 421 from Client 1 to Client 0
+0.1 Client 0 : Received result 78 from Client 2 for subtask 362
+0.1 Client 1 : Received result 91 from Client 9 for subtask 429
+0.2 Client 0 : Forwarding response for subtask 782 from Client 2 to Client 1
+0.2 Client 0 : Forwarding response for subtask 456 from Client 6 to Client 2
+0.2 Client 1 : Processing subtask from Client 2, sending result 68
+0.2 Client 9 : Forwarding subtask 370 from Client 3 to Client 0 via hop 0
+0.2 Client 3 : Forwarding response for subtask 305 from Client 5 to Client 4
+0.2 Client 3 : Forwarding response for subtask 925 from Client 5 to Client 4
+0.2 Client 1 : Forwarding subtask 582 from Client 5 to Client 2 via hop 2
+0.1 Client 6 : Received result 68 from Client 8 for subtask 178
+Client 6 received responses from peers
+Client 6 peer scores: 0, 0, 0, 0, 0, 0, 0.5, 0, 0.5, 0, 
+Client 6 final result: 68
+Client 6 sending scores to other clients
+Client 6 sent peer scores to client 0 via hop 0
+Client 6 sent peer scores to client 1 via hop 0
+Client 6 sent peer scores to client 2 via hop 0
+Client 6 sent peer scores to client 3 via hop 0
+Client 6 sent peer scores to client 4 via hop 4
+Client 6 sent peer scores to client 5 via hop 4
+Client 6 sent peer scores to client 7 via hop 7
+Client 6 sent peer scores to client 8 via hop 8
+Client 6 sent peer scores to client 9 via hop 8
+0.2 Client 6 : Forwarding response for subtask 368 from Client 8 to Client 7
+0.1 Client 7 : Received result 52 from Client 9 for subtask 739
+0.2 Client 1 : Processing subtask from Client 8, sending result 27
+0.2 Client 7 : Processing subtask from Client 8, sending result 95
+0.2 Client 8 : Forwarding response for subtask 440 from Client 0 to Client 9
+0.1 Client 0 : Received result 87 from Client 1 for subtask 421
+Client 0 received responses from peers
+Client 0 peer scores: 0, 0.5, 0.5, 0, 0, 0, 0, 0, 0, 0, 
+Client 0 final result: 87
+Client 0 sending scores to other clients
+Client 0 sent peer scores to client 1 via hop 1
+Client 0 sent peer scores to client 2 via hop 2
+Client 0 sent peer scores to client 3 via hop 2
+Client 0 sent peer scores to client 4 via hop 4
+Client 0 sent peer scores to client 5 via hop 4
+Client 0 sent peer scores to client 6 via hop 4
+Client 0 sent peer scores to client 7 via hop 4
+Client 0 sent peer scores to client 8 via hop 8
+Client 0 sent peer scores to client 9 via hop 8
+0.1 Client 1 : Received result 64 from Client 2 for subtask 782
+Client 1 received responses from peers
+Client 1 peer scores: 0, 0, 0.5, 0, 0, 0, 0, 0, 0, 0.5, 
+Client 1 final result: 91
+Client 1 sending scores to other clients
+Client 1 sent peer scores to client 0 via hop 9
+Client 1 sent peer scores to client 2 via hop 2
+Client 1 sent peer scores to client 3 via hop 3
+Client 1 sent peer scores to client 4 via hop 3
+Client 1 sent peer scores to client 5 via hop 5
+Client 1 sent peer scores to client 6 via hop 5
+Client 1 sent peer scores to client 7 via hop 5
+Client 1 sent peer scores to client 8 via hop 5
+Client 1 sent peer scores to client 9 via hop 9
+0.1 Client 2 : Received result 63 from Client 6 for subtask 456
+0.2 Client 2 : Received result 68 from Client 1 for subtask 11
+Client 2 received responses from peers
+Client 2 peer scores: 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 
+Client 2 final result: 68
+Client 2 sending scores to other clients
+Client 2 sent peer scores to client 0 via hop 0
+Client 2 sent peer scores to client 1 via hop 0
+Client 2 sent peer scores to client 3 via hop 3
+Client 2 sent peer scores to client 4 via hop 4
+Client 2 sent peer scores to client 5 via hop 4
+Client 2 sent peer scores to client 6 via hop 6
+Client 2 sent peer scores to client 7 via hop 6
+Client 2 sent peer scores to client 8 via hop 6
+Client 2 sent peer scores to client 9 via hop 6
+0.3 Client 0 : Processing subtask from Client 3, sending result 43
+0.1 Client 4 : Received result 92 from Client 5 for subtask 305
+0.1 Client 4 : Received result 81 from Client 5 for subtask 925
+Client 4 received responses from peers
+Client 4 peer scores: 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 
+Client 4 final result: 92
+Client 4 sending scores to other clients
+Client 4 sent peer scores to client 0 via hop 8
+Client 4 sent peer scores to client 1 via hop 8
+Client 4 sent peer scores to client 2 via hop 2
+Client 4 sent peer scores to client 3 via hop 2
+Client 4 sent peer scores to client 5 via hop 5
+Client 4 sent peer scores to client 6 via hop 6
+Client 4 sent peer scores to client 7 via hop 6
+Client 4 sent peer scores to client 8 via hop 8
+Client 4 sent peer scores to client 9 via hop 8
+0.3 Client 2 : Processing subtask from Client 5, sending result 37
+0.2 Client 0 : Received gossip message from client 6
+0.2 Client 0 : Received gossip message from client 6
+0.2 Client 0 : Received gossip message from client 6
+0.2 Client 0 : Received gossip message from client 6
+0.2 Client 4 : Received gossip message from client 6
+0.2 Client 4 : Received gossip message from client 6
+0.2 Client 7 : Received gossip message from client 6
+0.2 Client 8 : Received gossip message from client 6
+0.2 Client 8 : Received gossip message from client 6
+0.1 Client 7 : Received result 89 from Client 8 for subtask 368
+Client 7 received responses from peers
+Client 7 peer scores: 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 
+Client 7 final result: 89
+Client 7 sending scores to other clients
+Client 7 sent peer scores to client 0 via hop 9
+Client 7 sent peer scores to client 1 via hop 1
+Client 7 sent peer scores to client 2 via hop 1
+Client 7 sent peer scores to client 3 via hop 1
+Client 7 sent peer scores to client 4 via hop 1
+Client 7 sent peer scores to client 5 via hop 5
+Client 7 sent peer scores to client 6 via hop 5
+Client 7 sent peer scores to client 8 via hop 8
+Client 7 sent peer scores to client 9 via hop 9
+0.3 Client 5 : Forwarding response for subtask 601 from Client 1 to Client 8
+0.2 Client 8 : Received result 95 from Client 7 for subtask 97
+0.1 Client 9 : Received result 93 from Client 0 for subtask 440
+Client 9 received responses from peers
+Client 9 peer scores: 0.5, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 
+Client 9 final result: 93
+Client 9 sending scores to other clients
+Client 9 sent peer scores to client 0 via hop 0
+Client 9 sent peer scores to client 1 via hop 1
+Client 9 sent peer scores to client 2 via hop 1
+Client 9 sent peer scores to client 3 via hop 3
+Client 9 sent peer scores to client 4 via hop 3
+Client 9 sent peer scores to client 5 via hop 3
+Client 9 sent peer scores to client 6 via hop 3
+Client 9 sent peer scores to client 7 via hop 7
+Client 9 sent peer scores to client 8 via hop 7
+0.3 Client 1 : Received gossip message from client 0
+0.3 Client 2 : Received gossip message from client 0
+0.3 Client 2 : Received gossip message from client 0
+0.3 Client 4 : Received gossip message from client 0
+0.3 Client 4 : Received gossip message from client 0
+0.3 Client 4 : Received gossip message from client 0
+0.3 Client 4 : Received gossip message from client 0
+0.3 Client 8 : Received gossip message from client 0
+0.3 Client 8 : Received gossip message from client 0
+0.3 Client 9 : Received gossip message from client 1
+0.3 Client 2 : Received gossip message from client 1
+0.3 Client 3 : Received gossip message from client 1
+0.3 Client 3 : Received gossip message from client 1
+0.3 Client 5 : Received gossip message from client 1
+0.3 Client 5 : Received gossip message from client 1
+0.3 Client 5 : Received gossip message from client 1
+0.3 Client 5 : Received gossip message from client 1
+0.3 Client 9 : Received gossip message from client 1
+0.3 Client 0 : Received gossip message from client 2
+0.3 Client 0 : Received gossip message from client 2
+0.3 Client 3 : Received gossip message from client 2
+0.3 Client 4 : Received gossip message from client 2
+0.3 Client 4 : Received gossip message from client 2
+0.3 Client 6 : Received gossip message from client 2
+0.3 Client 6 : Received gossip message from client 2
+0.3 Client 6 : Received gossip message from client 2
+0.3 Client 6 : Received gossip message from client 2
+0.4 Client 2 : Forwarding response for subtask 370 from Client 0 to Client 3
+0.3 Client 8 : Received gossip message from client 4
+0.3 Client 8 : Received gossip message from client 4
+0.3 Client 2 : Received gossip message from client 4
+0.3 Client 2 : Received gossip message from client 4
+0.3 Client 5 : Received gossip message from client 4
+0.3 Client 6 : Received gossip message from client 4
+0.3 Client 6 : Received gossip message from client 4
+0.3 Client 8 : Received gossip message from client 4
+0.3 Client 8 : Received gossip message from client 4
+0.4 Client 4 : Forwarding response for subtask 582 from Client 2 to Client 5
+0.3 Client 9 : Received gossip message from client 7
+0.3 Client 1 : Received gossip message from client 7
+0.3 Client 1 : Received gossip message from client 7
+0.3 Client 1 : Received gossip message from client 7
+0.3 Client 1 : Received gossip message from client 7
+0.3 Client 5 : Received gossip message from client 7
+0.3 Client 5 : Received gossip message from client 7
+0.3 Client 8 : Received gossip message from client 7
+0.3 Client 9 : Received gossip message from client 7
+0.4 Client 7 : Forwarding response for subtask 601 from Client 1 to Client 8
+0.3 Client 0 : Received gossip message from client 9
+0.3 Client 1 : Received gossip message from client 9
+0.3 Client 1 : Received gossip message from client 9
+0.3 Client 3 : Received gossip message from client 9
+0.3 Client 3 : Received gossip message from client 9
+0.3 Client 3 : Received gossip message from client 9
+0.3 Client 3 : Received gossip message from client 9
+0.3 Client 7 : Received gossip message from client 9
+0.3 Client 7 : Received gossip message from client 9
+0.3 Client 3 : Received result 43 from Client 0 for subtask 370
+Client 3 received responses from peers
+Client 3 peer scores: 0.5, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, 
+Client 3 final result: 74
+Client 3 sending scores to other clients
+Client 3 sent peer scores to client 0 via hop 7
+Client 3 sent peer scores to client 1 via hop 1
+Client 3 sent peer scores to client 2 via hop 1
+Client 3 sent peer scores to client 4 via hop 4
+Client 3 sent peer scores to client 5 via hop 5
+Client 3 sent peer scores to client 6 via hop 5
+Client 3 sent peer scores to client 7 via hop 7
+Client 3 sent peer scores to client 8 via hop 7
+Client 3 sent peer scores to client 9 via hop 7
+0.3 Client 5 : Received result 37 from Client 2 for subtask 582
+Client 5 received responses from peers
+Client 5 peer scores: 0, 0, 0.5, 0, 0, 0.5, 0, 0, 0, 0, 
+Client 5 final result: 85
+Client 5 sending scores to other clients
+Client 5 sent peer scores to client 0 via hop 9
+Client 5 sent peer scores to client 1 via hop 9
+Client 5 sent peer scores to client 2 via hop 9
+Client 5 sent peer scores to client 3 via hop 3
+Client 5 sent peer scores to client 4 via hop 3
+Client 5 sent peer scores to client 6 via hop 6
+Client 5 sent peer scores to client 7 via hop 7
+Client 5 sent peer scores to client 8 via hop 7
+Client 5 sent peer scores to client 9 via hop 9
+0.2 Client 8 : Received result 27 from Client 1 for subtask 601
+Client 8 received responses from peers
+Client 8 peer scores: 0, 0.5, 0, 0, 0, 0, 0, 0.5, 0, 0, 
+Client 8 final result: 95
+Client 8 sending scores to other clients
+Client 8 sent peer scores to client 0 via hop 0
+Client 8 sent peer scores to client 1 via hop 0
+Client 8 sent peer scores to client 2 via hop 2
+Client 8 sent peer scores to client 3 via hop 2
+Client 8 sent peer scores to client 4 via hop 2
+Client 8 sent peer scores to client 5 via hop 2
+Client 8 sent peer scores to client 6 via hop 6
+Client 8 sent peer scores to client 7 via hop 6
+Client 8 sent peer scores to client 9 via hop 9
+0.5 Client 7 : Received gossip message from client 3
+0.5 Client 1 : Received gossip message from client 3
+0.5 Client 1 : Received gossip message from client 3
+0.5 Client 4 : Received gossip message from client 3
+0.5 Client 5 : Received gossip message from client 3
+0.5 Client 5 : Received gossip message from client 3
+0.5 Client 7 : Received gossip message from client 3
+0.5 Client 7 : Received gossip message from client 3
+0.5 Client 7 : Received gossip message from client 3
+0.5 Client 9 : Received gossip message from client 5
+0.5 Client 9 : Received gossip message from client 5
+0.5 Client 9 : Received gossip message from client 5
+0.5 Client 3 : Received gossip message from client 5
+0.5 Client 3 : Received gossip message from client 5
+0.5 Client 6 : Received gossip message from client 5
+0.5 Client 7 : Received gossip message from client 5
+0.5 Client 7 : Received gossip message from client 5
+0.5 Client 9 : Received gossip message from client 5
+0.5 Client 0 : Received gossip message from client 8
+0.5 Client 0 : Received gossip message from client 8
+0.5 Client 2 : Received gossip message from client 8
+0.5 Client 2 : Received gossip message from client 8
+0.5 Client 2 : Received gossip message from client 8
+0.5 Client 2 : Received gossip message from client 8
+0.5 Client 6 : Received gossip message from client 8
+0.5 Client 6 : Received gossip message from client 8
+0.5 Client 9 : Received gossip message from client 8

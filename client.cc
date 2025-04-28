@@ -38,7 +38,7 @@ public:
         // Initialize peer score vector
         peerScores.resize(numClients, 0);
 
-        // Initialize finger table for CHORD routing
+        // Initialize finger table for CserverHORD routing
         initializeFingerTable();
 
         // Extract the taskSizes array parameter
@@ -357,7 +357,7 @@ public:
             clientWorkload[i] = 0;
         }
 
-        // Process each subtask
+        // Process each subtask -  send each subtask to only one peer
         for (int i = 0; i < numSubtasks; i++)
         {
             // Calculate start and end indices for this subtask
@@ -370,7 +370,15 @@ public:
 
             // Use the random subtask ID to determine target client
             int subtaskId = subtaskIds[i];
-            int targetClientId = subtaskId % numClients;
+            
+            // Selecting only one peer per subtask - 
+            int targetClientId;
+            if (getIndex() == i % numClients) {
+                // Avoid sending to self, pick next client
+                targetClientId = (getIndex() + 1) % numClients;
+            } else {
+                targetClientId = i % numClients; 
+            }
 
             // Increment workload for this client
             clientWorkload[targetClientId]++;
@@ -433,38 +441,38 @@ public:
 
     void processResponses()
     {
-        std::vector<float> clientScores(numClients, 0);
+        if (logFile.is_open())
+            logFile << "Client " << getIndex() << " received responses from peers" << endl;
 
-        for (auto &it : peerResponses)
+        EV << "Client " << getIndex() << " received responses from peers" << endl;
+
+        // Since we now send each subtask to only one peer instead of multiple peers
+        // We directly accept the result without voting
+        std::vector<int> peerScores(numClients, 0);
+        int finalResult = 0;
+
+        // Process each subtask response
+        for (auto &subtaskEntry : peerResponses)
         {
-            int subtaskId = it.first;
-            int maxCount = 0, maxResponse = -1;
+            int subtaskId = subtaskEntry.first;
+            auto &responses = subtaskEntry.second;
 
-            std::map<int, int> responses;
-            for (auto &it2 : it.second)
-            {
-                int responseElement = it2.second;
-                responses[responseElement]++;
-                if (responses[responseElement] > maxCount)
-                {
-                    maxCount = responses[responseElement];
-                    maxResponse = responseElement;
-                }
+            // Since we only have one response per subtask, directly use that
+            int peerId = responses.begin()->first;
+            int result = responses.begin()->second;
+
+            // Update the result for this subtask
+            subtaskResult[subtaskId] = result;
+            
+            // Update the maximum overall result
+            if (result > finalResult) {
+                finalResult = result;
             }
 
-            // appending the maxResponse to the subtaskResult
-            subtaskResult[subtaskId] = maxResponse;
-
-            // updating the client scores
-            for (auto &it2 : it.second)
-            {
-                if (it2.second == maxResponse)
-                {
-                    clientScores[it2.first]++;
-                }
-            }
+            // Assuming all peers are honest, give them a score of 1
+            peerScores[peerId] = 1;
         }
-
+        
         if (logFile.is_open())
         {
             logFile << "Client " << getIndex() << " received responses from peers" << endl;
@@ -474,9 +482,9 @@ public:
         EV << "Client " << getIndex() << " received responses from peers" << endl;
         EV << "Client " << getIndex() << " peer scores: ";
 
-        for (int i = 0; i < clientScores.size(); i++)
+        for (int i = 0; i < peerScores.size(); i++)
         {
-            this->peerScores[i] = float(clientScores[i]) / subTask;
+            this->peerScores[i] = float(peerScores[i]) / subTask;
 
             if (logFile.is_open())
                 logFile << this->peerScores[i] << ", ";
@@ -490,15 +498,6 @@ public:
         EV << endl;
 
         // Calculate final result
-        int finalResult = -1;
-        for (auto &it : subtaskResult)
-        {
-            if (finalResult < it.second)
-            {
-                finalResult = it.second;
-            }
-        }
-
         if (logFile.is_open())
             logFile << "Client " << getIndex() << " final result: " << finalResult << endl;
 

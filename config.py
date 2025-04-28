@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# filepath: config.py
+#B22CS081_B22CS030
 
 import re
 import os

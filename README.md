@@ -1,109 +1,52 @@
 # Authors : B22CS081 B22CS030
-# Computer Network Assignment-2: Remote Program Execution Simulation using OMNeT++
+# Computer Network Assignment-3: P2P Program Execution Simulation using OMNeT++
 
 ## Overview
 
-This project simulates remote program execution using the OMNeT++ Discrete Event Simulator. In the simulation, a client node divides a computational task (for example, determining the maximum element in an array) into several subtasks and distributes them among multiple server nodes for parallel processing. The overall result is determined by a majority vote based on the responses received from the servers. Additionally, client nodes exchange performance ratings for the servers via a gossip protocol, which is subsequently used to optimize future task assignments.
+This project simulates remote program execution using the OMNeT++ Discrete Event Simulator. In the simulation, a client node divides a computational task (for example, determining the maximum element in an array) into several subtasks and distributes them among other client nodes for parallel processing. The overall result is determined by aggregating the maximum received for each subtask. Additionally, client nodes do gosip message to all other clients after getting the task done.
 
 ## Assignment Objectives
 
 - *Task Partitioning:*  
   - Divide an array of x integer elements (with x ≥ 2) into n approximately equal segments, ensuring each segment contains at least two elements.  
     > Note: It is assumed that x is always at least 2.
-  - Dispatch each subtask to n/2 + 1 servers for execution.
-
-- *Server Processing:*  
-  - Each server processes its assigned subtask by determining the maximum value within its designated sub-array.
-  - Up to n/4 servers may act maliciously by returning incorrect results.
-
-- *Result Consolidation:*  
-  - Client nodes aggregate the results of all subtasks using majority voting (for example, by selecting the highest value from the subarray outputs).
-
-- *Gossip-Based Server Rating:*  
-  - Servers are rated by clients with a score of 1 for an honest response and 0 for a malicious one.
-  - Upon task completion, each client broadcasts a gossip message in the format <timestamp>:<IP>:<Score#> to all directly connected nodes.
-  - Each client records the first occurrence of every unique gossip message and uses these scores to compute an average rating for each server.
-  - In subsequent rounds, clients preferentially assign subtasks to the top n/2 + 1 servers based on these averaged ratings.
+  - Dispatch each subtask to a client based on clientid = subtaskid % num_of_clients
 
 ## Network Setup
 
-- *Server Nodes:*  
-  - The simulation includes a minimum of n (> 3) server nodes.
-  - Servers may operate either honestly or maliciously, with the number of malicious nodes limited to less than n/4.
-
-- *Client Nodes:*  
-  - Each client divides the overall task into n subtasks and dispatches each subtask to n/2 + 1 servers.
-  - Clients collect the results, apply majority voting, and compute a consolidated final outcome.
-  - Based on the results, an average score is assigned to each server and a corresponding gossip message is generated.
-  - Full connectivity among clients is maintained to facilitate the exchange of server performance ratings via the gossip protocol.
-
-- *Topology Configuration:*  
-  - The network topology is defined in the topo.txt file.
-  - This file can be modified during evaluation as needed to update the network configuration.
+The network consists of N client nodes arranged in a ring topology. Each client has a unique ID starting from 0 and is connected to its successor and predecessor in the ring. Additional connections are established to optimize message exchange complexity from O(N) to O(logN), inspired by the CHORD Distributed Hash Table protocol.
 
 ## Simulation Workflow
 
-1. *Task Execution:*  
-   - Clients partition the primary task (such as calculating the maximum value) into n subtasks.
-   - Each subtask is assigned to a selected set of n/2 + 1 servers.
-   - Servers compute the maximum value from their respective subarrays and return the result.
+1. A client node initializes a task (e.g., finding the maximum element in an array).
+2. The client divides the task into x subtasks, where x > N.
+3. For each subtask with ID i:
+   - The subtask is assigned to client with ID (i % N).
+   - The client routes the subtask to the target client using O(logN) message exchanges.
+4. Each client executes its assigned subtasks and sends results back to the requesting client.
+5. The requesting client consolidates results (e.g., finds the maximum among all returned values).
+6. After completing the task, the client sends gossip messages to all other clients.
+7. Once a client receives gossip messages from all N clients, it terminates.
 
-2. *Result Aggregation:*  
-   - Clients determine the overall outcome by applying a majority vote (or by selecting the maximum among all responses).
-   - The results are logged to both the console and output files.
+## Gossip Protocol
 
-3. *Server Rating and Gossip Protocol:*  
-   - Servers receive a rating of 1 for honest responses and 0 for malicious responses.
-   - Each client compiles these ratings and broadcasts a gossip message in the format <timestamp>:<IP>:<Score#>.
-   - Unique gossip messages are forwarded exactly once, each accompanied by the sender's IP address and a local timestamp.
-   - The aggregated gossip messages are used to calculate the average score for each server, thereby influencing task assignments in subsequent simulation rounds.
-
-4. *Logging Mechanism:*  
-   - The following information is logged to output.txt:
-     - Each server writes the result of each computed subtask to both the console and an output file.
-     - Each client writes the result of every subtask received from the servers, along with the consolidated result of each task, to the console and an output file.
-     - Every unique gossip message, along with a local timestamp and the sender's IP address (node ID), is displayed on the console and logged to an output file.
-     - Additionally, clients are capable of displaying the scores of each server on both the console and in a file.
+- When a client completes a task, it generates a message in the format:
+  ```
+  <self.timestamp>:<self.IP>:<self.ClientID#>
+  ```
+- This message is transmitted to all adjacent nodes.
+- When a node receives a message for the first time:
+  - It makes an entry in the Message Log (ML) to track the message.
+  - It forwards the message to all peers except the source peer.
+- Subsequent receipts of the same message are ignored to prevent loops.
 
 ## Program Output
 
-- *Server Output:*  
-  - Each server displays the result of its subtask on the console and logs the output to a file.
-
-- *Client Output:*  
-  - Each client displays the outcomes of all received subtasks along with the consolidated final result.
-  - Gossip messages, including timestamps and sender IP addresses, are output to the console and recorded in a log file.
-  - Consolidated server scores are also presented on the console and saved to an output file.
-
-## Compilation and Execution Instructions
-
-### Prerequisites
-
-- *OMNeT++ Installation:*  
-  Ensure that OMNeT++ is installed on your system. For installation instructions, please refer to the [OMNeT++ Install Guide](https://doc.omnetpp.org/omnetpp/InstallGuide.pdf).
-
-- *C++ Compiler:*  
-  A compatible C++ compiler is required to build the simulation project.
-
-- *Python:*  
-  Python is required to run the provided configuration script.
-
-- *Environment Setup:*  
-  Configure the necessary environment variables for OMNeT++.
-
-### Steps to Compile and Run the Simulation
-
-1. Open a terminal and navigate to the OMNeT++ installation root directory.
-2. Launch OMNeT++ by executing:
-   bash
-   omnetpp
-   
-3. Within the OMNeT++ IDE, select the CNAssignment2 project.
-4. Update the network topology in the topo.txt file as needed, and run the provided Python script (e.g., config.py) to generate the Network.ned file:
-   bash
-   python config.py
-   
-5. Finally, start the simulation by executing the omnetpp.ini file, which initiates the simulation process.
+- Each client logs the result of each subtask it receives from other clients, both to the console and an output file.
+- Each client displays the consolidated result of each task.
+- Every gossip message received for the first time is displayed on the console and written to the output file, along with:
+  - A local timestamp
+  - The IP address (node ID) of the source node
 
 ## File Structure
 
@@ -117,47 +60,10 @@ This project simulates remote program execution using the OMNeT++ Discrete Event
 ## Network Configuration
 
 ### topo.txt
-
-The `topo.txt` file is a simple configuration file that defines key network parameters:
-
-```
-num_clients = 9
-task_sizes = "5,5"
-delay = 100
-```
-
-- **num_clients**: Specifies the number of client nodes in the network (default: 10)
-- **task_sizes**: Defines the sizes of tasks to be processed in the simulation (default: "4,5")
-- **delay**: Sets the communication delay between nodes in milliseconds (default: 100)
+The topology file defines the network structure including the number of clients and their connections.
 
 ### config.py
-
-The `config.py` script automatically generates the `Network.ned` file based on parameters specified in `topo.txt`. This approach allows for easy topology modifications without directly editing complex NED files.
-
-#### Key Features:
-
-- **Parameter Extraction**: Reads and parses the `topo.txt` file to extract network configuration parameters
-- **Chord Network Generation**: Creates connections between nodes following a Chord distributed hash table topology
-- **Dynamic NED Generation**: Produces the `Network.ned` file with all necessary node definitions and connections
-
-#### Usage:
-
-To update the network configuration:
-
-1. Modify the parameters in `topo.txt` as needed
-2. Run the Python script:
-   ```bash
-   python config.py
-   ```
-3. The script will generate a new `Network.ned` file with your updated configuration
-4. Compile and run the simulation with the new network topology
-
-#### Default Values:
-
-If the `topo.txt` file is missing or parameters are not specified, the following defaults are used:
-- Number of clients: 10
-- Task sizes: "4,5"
-- Connection delay: 100ms
+This script reads the topology file and dynamically generates the NED file that defines the network structure for the simulation.
 
 ## Compilation and Execution Instructions
 
@@ -180,11 +86,15 @@ If the `topo.txt` file is missing or parameters are not specified, the following
 1. Open a terminal and navigate to the OMNeT++ installation root directory.
 2. Launch OMNeT++ by executing:
    bash
+   ```
    omnetpp
+   ```
    
 3. Within the OMNeT++ IDE, select the CNAssignment2 project.
 4. Update the network topology in the topo.txt file as needed, and run the provided Python script (e.g., config.py) to generate the Network.ned file:
    bash
+   ```
    python config.py
+   ```
    
 5. Finally, start the simulation by executing the omnetpp.ini file, which initiates the simulation process.

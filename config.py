@@ -1,121 +1,129 @@
-import math
+#!/usr/bin/env python3
+# filepath: config.py
 
-# Parsing topo.txt
-def parse_topo_file(file_path):
-    with open(file_path, 'r') as f:
-        lines = [line.strip() for line in f.readlines() if line.strip()]
-    
-    config = {}
-    
-    # Parse the header lines
-    for line in lines[:1]:
-        if "Number of client nodes" in line:
-            config['num_clients'] = int(line.split('=')[1].strip())
-    
-    # Parsing client task sizes
-    client_tasks = {}
-    for line in lines[1:]:
-        if "Client" in line and ":" in line:
-            parts = line.split(":")
-            client_id = int(parts[0].split()[1].strip()) - 1  # Converting to 0-based indexing
-            task_sizes = parts[1].strip()                      # Keeping as string
-            client_tasks[client_id] = task_sizes
-    
-    config['client_tasks'] = client_tasks
-    
-    return config
+import re
+import os
 
-def generate_task_size_condition(client_tasks, num_clients):
-    result = []
-    defined_clients = len(client_tasks)
+def read_topo_file(filename="topo.txt"):
+    """Read the topology file and extract parameters."""
+    try:
+        with open(filename, 'r') as f:
+            content = f.read()
+            
+        # Extract number of clients
+        num_clients_match = re.search(r'num_clients\s*=\s*(\d+)', content)
+        num_clients = int(num_clients_match.group(1)) if num_clients_match else 10  # default 10
+        
+        # Extract task sizes if present
+        task_sizes_match = re.search(r'task_sizes\s*=\s*"([^"]+)"', content)
+        task_sizes = task_sizes_match.group(1) if task_sizes_match else "4,5"  # default "4,5"
+        
+        # Extract connection delay if present
+        delay_match = re.search(r'delay\s*=\s*(\d+(?:\.\d+)?)ms', content)
+        delay = delay_match.group(1) if delay_match else "100"  # default 100ms
+        
+        # You could extract more parameters as needed
+        
+        return {
+            "num_clients": num_clients,
+            "task_sizes": task_sizes,
+            "delay": delay
+        }
+    except FileNotFoundError:
+        print(f"Warning: {filename} not found, using default values")
+        return {
+            "num_clients": 10,
+            "task_sizes": "4,5",
+            "delay": "100"
+        }
+
+def generate_connections(num_clients):
+    """Generate connection code for clients based on Chord finger tables."""
+    connections = []
+    
+    # For each client, generate its finger table connections
     for i in range(num_clients):
-        if i in client_tasks:
-            task_sizes = f'"{client_tasks[i]}"'
-            if i == 0:
-                result.append(f"index==0 ? {task_sizes} : \n")
-            else:
-                result.append(f"                           (index=={i} ? {task_sizes} : \n")
+        # Formula for chord finger table: node connects to (n + 2^j) mod N
+        # where j ranges from 0 to log2(N)-1
+        finger_indices = []
+        for j in range(int.bit_length(num_clients - 1)):
+            finger = (i + (2**j)) % num_clients
+            finger_indices.append(finger)
+            connections.append(f"        client[{i}].out[{finger}] --> DelayChannel --> client[{finger}].in[{i}];")
+            connections.append(f"        client[{i}].gout[{finger}] --> DelayChannel --> client[{finger}].gin[{i}];")
     
-    # Adding the default case
-    result.append("                           \"10\"")
-    
-    # Adding closing parentheses - one for each client condition except the first one
-    defined_clients_after_first = sum(1 for k in client_tasks.keys() if k > 0)
-    result.append(")" * defined_clients_after_first)
-    result.append(";")
-    
-    return "".join(result)
+    return "\n".join(connections)
 
-def generate_network_ned(config, output_file):  
-    # Generate the conditional task size assignment with correct parentheses
-    task_size_condition = generate_task_size_condition(config['client_tasks'], config['num_clients'])
+def generate_network_ned(params):
+    """Generate the Network.ned file content."""
     
-    # Calculate the number of finger table connections needed for O(log N) routing
-    log_n = math.ceil(math.log2(config['num_clients']))
-    
-    ned_content = f"""// B22CS081_B22CS030 P2P Network with CHORD-like routing
+    ned_content = f"""// B22CS081_B22CS030 This file was generated automatically based on the configuration in topo.txt
+
+simple ServerNode
+{{
+    parameters:
+        int id;
+        int numClients;  // Used to size gate vectors
+    gates:
+        input in[numClients];
+        output out[numClients];
+}}
 
 simple ClientNode
 {{
     parameters:
         int id;
+//        int numServers;
         int numClients;
         string taskSizes;
     gates:
-        // For communication with other clients (both ring and finger table connections)
+        // For task messages with servers:
         input in[numClients];
         output out[numClients];
+        // For gossip messages with other clients:
+        input gin[numClients];
+        output gout[numClients];
 }}
 
-network P2PAssignment
+network Assignment2
 {{
     parameters:
-        int numClients = default({config['num_clients']});
+        int numClients = default({params['num_clients']});
     
     types:
         channel DelayChannel extends ned.DelayChannel {{
-            delay = 100ms;
+            delay = {params['delay']}ms;
         }}
-    
     submodules:
         client[numClients]: ClientNode {{
             parameters:
                 id = index;
                 numClients = parent.numClients;
-                taskSizes = {task_size_condition}
+                taskSizes = "{params['task_sizes']}";
         }}
 
     connections allowunconnected:
-        // Create ring topology connections
-        for i=0..numClients-1 {{
-            client[i].out[(i+1)%numClients] --> DelayChannel --> client[(i+1)%numClients].in[i];
-            client[i].out[(i-1+numClients)%numClients] --> DelayChannel --> client[(i-1+numClients)%numClients].in[i];
-        }}
-        
-        // Create CHORD-like finger table connections
-        // Each node i has connections to nodes (i+2^j) % numClients for j = 0,1,2,...,log2(numClients)-1
-        // Using a fixed value for the maximum j since log2() is not available in NED language
-        for i=0..numClients-1, for j=0..{log_n-1} {{
-            client[i].out[(i+(1<<j))%numClients] --> DelayChannel --> client[(i+(1<<j))%numClients].in[i];
-        }}
+        // Connect each node to its fingers using explicit indices
+{generate_connections(params['num_clients'])}
 }}
 """
-    with open(output_file, 'w') as f:
-        f.write(ned_content)
-    print(f"Successfully generated {output_file}")
+    return ned_content
+
+def write_network_ned(content, filename="Network.ned"):
+    """Write the Network.ned file."""
+    with open(filename, 'w') as f:
+        f.write(content)
+    print(f"Successfully generated {filename}")
 
 def main():
-    topo_file = "topo.txt"
-    network_ned_file = "Network.ned"
+    # Read the topology file
+    params = read_topo_file()
     
-    try:
-        config = parse_topo_file(topo_file)
-        generate_network_ned(config, network_ned_file)
-    except Exception as e:
-        print(f"Error: {e}")
-        return 1
+    # Generate the Network.ned content
+    ned_content = generate_network_ned(params)
     
-    return 0
+    # Write the Network.ned file
+    write_network_ned(ned_content)
 
 if __name__ == "__main__":
-    exit(main())
+    main()

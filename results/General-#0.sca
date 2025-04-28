@@ -1,8 +1,8 @@
 version 3
-run General-0-20250428-19:12:02-29478
+run General-0-20250428-19:30:58-30951
 attr configname General
-attr datetime 20250428-19:12:02
-attr datetimef 20250428-191202
+attr datetime 20250428-19:30:58
+attr datetimef 20250428-193058
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
@@ -10,7 +10,7 @@ attr iterationvarsd ""
 attr iterationvarsf ""
 attr measurement ""
 attr network Assignment2
-attr processid 29478
+attr processid 30951
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -105,16 +105,16 @@ attr mutable ""
 par Assignment2.client[1].gout[5].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[1].out[9].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[1].out[9].channel disabled false
+par Assignment2.client[1].out[0].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[1].out[0].channel disabled false
 attr mutable ""
-par Assignment2.client[1].out[9].channel delay 0.1s
+par Assignment2.client[1].out[0].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[1].gout[9].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[1].gout[9].channel disabled false
+par Assignment2.client[1].gout[0].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[1].gout[0].channel disabled false
 attr mutable ""
-par Assignment2.client[1].gout[9].channel delay 0.1s
+par Assignment2.client[1].gout[0].channel delay 0.1s
 attr mutable ""
 attr unit s
 par Assignment2.client[2].out[3].channel typename "\"Assignment2.DelayChannel\""
@@ -153,16 +153,16 @@ attr mutable ""
 par Assignment2.client[2].gout[6].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[2].out[0].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[2].out[0].channel disabled false
+par Assignment2.client[2].out[1].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[2].out[1].channel disabled false
 attr mutable ""
-par Assignment2.client[2].out[0].channel delay 0.1s
+par Assignment2.client[2].out[1].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[2].gout[0].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[2].gout[0].channel disabled false
+par Assignment2.client[2].gout[1].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[2].gout[1].channel disabled false
 attr mutable ""
-par Assignment2.client[2].gout[0].channel delay 0.1s
+par Assignment2.client[2].gout[1].channel delay 0.1s
 attr mutable ""
 attr unit s
 par Assignment2.client[3].out[4].channel typename "\"Assignment2.DelayChannel\""
@@ -201,16 +201,16 @@ attr mutable ""
 par Assignment2.client[3].gout[7].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[3].out[1].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[3].out[1].channel disabled false
+par Assignment2.client[3].out[2].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[3].out[2].channel disabled false
 attr mutable ""
-par Assignment2.client[3].out[1].channel delay 0.1s
+par Assignment2.client[3].out[2].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[3].gout[1].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[3].gout[1].channel disabled false
+par Assignment2.client[3].gout[2].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[3].gout[2].channel disabled false
 attr mutable ""
-par Assignment2.client[3].gout[1].channel delay 0.1s
+par Assignment2.client[3].gout[2].channel delay 0.1s
 attr mutable ""
 attr unit s
 par Assignment2.client[4].out[5].channel typename "\"Assignment2.DelayChannel\""
@@ -249,16 +249,16 @@ attr mutable ""
 par Assignment2.client[4].gout[8].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[4].out[2].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[4].out[2].channel disabled false
+par Assignment2.client[4].out[3].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[4].out[3].channel disabled false
 attr mutable ""
-par Assignment2.client[4].out[2].channel delay 0.1s
+par Assignment2.client[4].out[3].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[4].gout[2].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[4].gout[2].channel disabled false
+par Assignment2.client[4].gout[3].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[4].gout[3].channel disabled false
 attr mutable ""
-par Assignment2.client[4].gout[2].channel delay 0.1s
+par Assignment2.client[4].gout[3].channel delay 0.1s
 attr mutable ""
 attr unit s
 par Assignment2.client[5].out[6].channel typename "\"Assignment2.DelayChannel\""
@@ -285,28 +285,28 @@ attr mutable ""
 par Assignment2.client[5].gout[7].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[5].out[9].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[5].out[9].channel disabled false
+par Assignment2.client[5].out[0].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[5].out[0].channel disabled false
 attr mutable ""
-par Assignment2.client[5].out[9].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[5].gout[9].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[5].gout[9].channel disabled false
-attr mutable ""
-par Assignment2.client[5].gout[9].channel delay 0.1s
+par Assignment2.client[5].out[0].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[5].out[3].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[5].out[3].channel disabled false
+par Assignment2.client[5].gout[0].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[5].gout[0].channel disabled false
 attr mutable ""
-par Assignment2.client[5].out[3].channel delay 0.1s
+par Assignment2.client[5].gout[0].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[5].gout[3].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[5].gout[3].channel disabled false
+par Assignment2.client[5].out[4].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[5].out[4].channel disabled false
 attr mutable ""
-par Assignment2.client[5].gout[3].channel delay 0.1s
+par Assignment2.client[5].out[4].channel delay 0.1s
+attr mutable ""
+attr unit s
+par Assignment2.client[5].gout[4].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[5].gout[4].channel disabled false
+attr mutable ""
+par Assignment2.client[5].gout[4].channel delay 0.1s
 attr mutable ""
 attr unit s
 par Assignment2.client[6].out[7].channel typename "\"Assignment2.DelayChannel\""
@@ -333,28 +333,28 @@ attr mutable ""
 par Assignment2.client[6].gout[8].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[6].out[0].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[6].out[0].channel disabled false
+par Assignment2.client[6].out[1].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[6].out[1].channel disabled false
 attr mutable ""
-par Assignment2.client[6].out[0].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[6].gout[0].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[6].gout[0].channel disabled false
-attr mutable ""
-par Assignment2.client[6].gout[0].channel delay 0.1s
+par Assignment2.client[6].out[1].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[6].out[4].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[6].out[4].channel disabled false
+par Assignment2.client[6].gout[1].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[6].gout[1].channel disabled false
 attr mutable ""
-par Assignment2.client[6].out[4].channel delay 0.1s
+par Assignment2.client[6].gout[1].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[6].gout[4].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[6].gout[4].channel disabled false
+par Assignment2.client[6].out[5].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[6].out[5].channel disabled false
 attr mutable ""
-par Assignment2.client[6].gout[4].channel delay 0.1s
+par Assignment2.client[6].out[5].channel delay 0.1s
+attr mutable ""
+attr unit s
+par Assignment2.client[6].gout[5].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[6].gout[5].channel disabled false
+attr mutable ""
+par Assignment2.client[6].gout[5].channel delay 0.1s
 attr mutable ""
 attr unit s
 par Assignment2.client[7].out[8].channel typename "\"Assignment2.DelayChannel\""
@@ -369,52 +369,40 @@ attr mutable ""
 par Assignment2.client[7].gout[8].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[7].out[9].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[7].out[9].channel disabled false
+par Assignment2.client[7].out[0].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[7].out[0].channel disabled false
 attr mutable ""
-par Assignment2.client[7].out[9].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[7].gout[9].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[7].gout[9].channel disabled false
-attr mutable ""
-par Assignment2.client[7].gout[9].channel delay 0.1s
+par Assignment2.client[7].out[0].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[7].out[1].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[7].out[1].channel disabled false
+par Assignment2.client[7].gout[0].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[7].gout[0].channel disabled false
 attr mutable ""
-par Assignment2.client[7].out[1].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[7].gout[1].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[7].gout[1].channel disabled false
-attr mutable ""
-par Assignment2.client[7].gout[1].channel delay 0.1s
+par Assignment2.client[7].gout[0].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[7].out[5].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[7].out[5].channel disabled false
+par Assignment2.client[7].out[2].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[7].out[2].channel disabled false
 attr mutable ""
-par Assignment2.client[7].out[5].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[7].gout[5].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[7].gout[5].channel disabled false
-attr mutable ""
-par Assignment2.client[7].gout[5].channel delay 0.1s
+par Assignment2.client[7].out[2].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[8].out[9].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[8].out[9].channel disabled false
+par Assignment2.client[7].gout[2].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[7].gout[2].channel disabled false
 attr mutable ""
-par Assignment2.client[8].out[9].channel delay 0.1s
+par Assignment2.client[7].gout[2].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[8].gout[9].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[8].gout[9].channel disabled false
+par Assignment2.client[7].out[6].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[7].out[6].channel disabled false
 attr mutable ""
-par Assignment2.client[8].gout[9].channel delay 0.1s
+par Assignment2.client[7].out[6].channel delay 0.1s
+attr mutable ""
+attr unit s
+par Assignment2.client[7].gout[6].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[7].gout[6].channel disabled false
+attr mutable ""
+par Assignment2.client[7].gout[6].channel delay 0.1s
 attr mutable ""
 attr unit s
 par Assignment2.client[8].out[0].channel typename "\"Assignment2.DelayChannel\""
@@ -429,118 +417,78 @@ attr mutable ""
 par Assignment2.client[8].gout[0].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[8].out[2].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[8].out[2].channel disabled false
+par Assignment2.client[8].out[1].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[8].out[1].channel disabled false
 attr mutable ""
-par Assignment2.client[8].out[2].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[8].gout[2].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[8].gout[2].channel disabled false
-attr mutable ""
-par Assignment2.client[8].gout[2].channel delay 0.1s
+par Assignment2.client[8].out[1].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[8].out[6].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[8].out[6].channel disabled false
+par Assignment2.client[8].gout[1].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[8].gout[1].channel disabled false
 attr mutable ""
-par Assignment2.client[8].out[6].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[8].gout[6].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[8].gout[6].channel disabled false
-attr mutable ""
-par Assignment2.client[8].gout[6].channel delay 0.1s
+par Assignment2.client[8].gout[1].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[9].out[0].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[9].out[0].channel disabled false
+par Assignment2.client[8].out[3].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[8].out[3].channel disabled false
 attr mutable ""
-par Assignment2.client[9].out[0].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[9].gout[0].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[9].gout[0].channel disabled false
-attr mutable ""
-par Assignment2.client[9].gout[0].channel delay 0.1s
+par Assignment2.client[8].out[3].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[9].out[1].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[9].out[1].channel disabled false
+par Assignment2.client[8].gout[3].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[8].gout[3].channel disabled false
 attr mutable ""
-par Assignment2.client[9].out[1].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[9].gout[1].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[9].gout[1].channel disabled false
-attr mutable ""
-par Assignment2.client[9].gout[1].channel delay 0.1s
+par Assignment2.client[8].gout[3].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[9].out[3].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[9].out[3].channel disabled false
+par Assignment2.client[8].out[7].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[8].out[7].channel disabled false
 attr mutable ""
-par Assignment2.client[9].out[3].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[9].gout[3].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[9].gout[3].channel disabled false
-attr mutable ""
-par Assignment2.client[9].gout[3].channel delay 0.1s
+par Assignment2.client[8].out[7].channel delay 0.1s
 attr mutable ""
 attr unit s
-par Assignment2.client[9].out[7].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[9].out[7].channel disabled false
+par Assignment2.client[8].gout[7].channel typename "\"Assignment2.DelayChannel\""
+par Assignment2.client[8].gout[7].channel disabled false
 attr mutable ""
-par Assignment2.client[9].out[7].channel delay 0.1s
-attr mutable ""
-attr unit s
-par Assignment2.client[9].gout[7].channel typename "\"Assignment2.DelayChannel\""
-par Assignment2.client[9].gout[7].channel disabled false
-attr mutable ""
-par Assignment2.client[9].gout[7].channel delay 0.1s
+par Assignment2.client[8].gout[7].channel delay 0.1s
 attr mutable ""
 attr unit s
 par Assignment2.client[0] typename "\"ClientNode\""
 par Assignment2.client[0] id 0
-par Assignment2.client[0] numClients 10
-par Assignment2.client[0] taskSizes "\"4,5\""
+par Assignment2.client[0] numClients 9
+par Assignment2.client[0] taskSizes "\"5,5\""
 par Assignment2.client[1] typename "\"ClientNode\""
 par Assignment2.client[1] id 1
-par Assignment2.client[1] numClients 10
-par Assignment2.client[1] taskSizes "\"4,5\""
+par Assignment2.client[1] numClients 9
+par Assignment2.client[1] taskSizes "\"5,5\""
 par Assignment2.client[2] typename "\"ClientNode\""
 par Assignment2.client[2] id 2
-par Assignment2.client[2] numClients 10
-par Assignment2.client[2] taskSizes "\"4,5\""
+par Assignment2.client[2] numClients 9
+par Assignment2.client[2] taskSizes "\"5,5\""
 par Assignment2.client[3] typename "\"ClientNode\""
 par Assignment2.client[3] id 3
-par Assignment2.client[3] numClients 10
-par Assignment2.client[3] taskSizes "\"4,5\""
+par Assignment2.client[3] numClients 9
+par Assignment2.client[3] taskSizes "\"5,5\""
 par Assignment2.client[4] typename "\"ClientNode\""
 par Assignment2.client[4] id 4
-par Assignment2.client[4] numClients 10
-par Assignment2.client[4] taskSizes "\"4,5\""
+par Assignment2.client[4] numClients 9
+par Assignment2.client[4] taskSizes "\"5,5\""
 par Assignment2.client[5] typename "\"ClientNode\""
 par Assignment2.client[5] id 5
-par Assignment2.client[5] numClients 10
-par Assignment2.client[5] taskSizes "\"4,5\""
+par Assignment2.client[5] numClients 9
+par Assignment2.client[5] taskSizes "\"5,5\""
 par Assignment2.client[6] typename "\"ClientNode\""
 par Assignment2.client[6] id 6
-par Assignment2.client[6] numClients 10
-par Assignment2.client[6] taskSizes "\"4,5\""
+par Assignment2.client[6] numClients 9
+par Assignment2.client[6] taskSizes "\"5,5\""
 par Assignment2.client[7] typename "\"ClientNode\""
 par Assignment2.client[7] id 7
-par Assignment2.client[7] numClients 10
-par Assignment2.client[7] taskSizes "\"4,5\""
+par Assignment2.client[7] numClients 9
+par Assignment2.client[7] taskSizes "\"5,5\""
 par Assignment2.client[8] typename "\"ClientNode\""
 par Assignment2.client[8] id 8
-par Assignment2.client[8] numClients 10
-par Assignment2.client[8] taskSizes "\"4,5\""
-par Assignment2.client[9] typename "\"ClientNode\""
-par Assignment2.client[9] id 9
-par Assignment2.client[9] numClients 10
-par Assignment2.client[9] taskSizes "\"4,5\""
+par Assignment2.client[8] numClients 9
+par Assignment2.client[8] taskSizes "\"5,5\""
 par Assignment2 typename "\"Assignment2\""
-par Assignment2 numClients 10
+par Assignment2 numClients 9
 

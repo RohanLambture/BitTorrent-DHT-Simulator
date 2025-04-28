@@ -29,7 +29,7 @@ simple ClientNode
 network Assignment2
 {
     parameters:
-        int numClients = default(10);
+        int numClients = default(9);
     
     types:
         channel DelayChannel extends ned.DelayChannel {
@@ -40,27 +40,81 @@ network Assignment2
             parameters:
                 id = index;
                 numClients = parent.numClients;
-                taskSizes = "4,5";
+                taskSizes = "5,5";
         }
 
     connections allowunconnected:
         // Connect each node to its fingers using explicit indices
-        for i=0..numClients-1 {
-            // Successor (first finger)
-            client[i].out[(i+1)%numClients] --> DelayChannel --> client[(i+1)%numClients].in[i];
-            client[i].gout[(i+1)%numClients] --> DelayChannel --> client[(i+1)%numClients].gin[i];
-            
-            // Second finger (i+2)
-            client[i].out[(i+2)%numClients] --> DelayChannel --> client[(i+2)%numClients].in[i];
-            client[i].gout[(i+2)%numClients] --> DelayChannel --> client[(i+2)%numClients].gin[i];
-            
-            // Third finger (i+4)
-            client[i].out[(i+4)%numClients] --> DelayChannel --> client[(i+4)%numClients].in[i];
-            client[i].gout[(i+4)%numClients] --> DelayChannel --> client[(i+4)%numClients].gin[i];
-            
-            // Fourth finger (i+8)
-            client[i].out[(i+8)%numClients] --> DelayChannel --> client[(i+8)%numClients].in[i];
-            client[i].gout[(i+8)%numClients] --> DelayChannel --> client[(i+8)%numClients].gin[i];
-        }
+        client[0].out[1] --> DelayChannel --> client[1].in[0];
+        client[0].gout[1] --> DelayChannel --> client[1].gin[0];
+        client[0].out[2] --> DelayChannel --> client[2].in[0];
+        client[0].gout[2] --> DelayChannel --> client[2].gin[0];
+        client[0].out[4] --> DelayChannel --> client[4].in[0];
+        client[0].gout[4] --> DelayChannel --> client[4].gin[0];
+        client[0].out[8] --> DelayChannel --> client[8].in[0];
+        client[0].gout[8] --> DelayChannel --> client[8].gin[0];
+        client[1].out[2] --> DelayChannel --> client[2].in[1];
+        client[1].gout[2] --> DelayChannel --> client[2].gin[1];
+        client[1].out[3] --> DelayChannel --> client[3].in[1];
+        client[1].gout[3] --> DelayChannel --> client[3].gin[1];
+        client[1].out[5] --> DelayChannel --> client[5].in[1];
+        client[1].gout[5] --> DelayChannel --> client[5].gin[1];
+        client[1].out[0] --> DelayChannel --> client[0].in[1];
+        client[1].gout[0] --> DelayChannel --> client[0].gin[1];
+        client[2].out[3] --> DelayChannel --> client[3].in[2];
+        client[2].gout[3] --> DelayChannel --> client[3].gin[2];
+        client[2].out[4] --> DelayChannel --> client[4].in[2];
+        client[2].gout[4] --> DelayChannel --> client[4].gin[2];
+        client[2].out[6] --> DelayChannel --> client[6].in[2];
+        client[2].gout[6] --> DelayChannel --> client[6].gin[2];
+        client[2].out[1] --> DelayChannel --> client[1].in[2];
+        client[2].gout[1] --> DelayChannel --> client[1].gin[2];
+        client[3].out[4] --> DelayChannel --> client[4].in[3];
+        client[3].gout[4] --> DelayChannel --> client[4].gin[3];
+        client[3].out[5] --> DelayChannel --> client[5].in[3];
+        client[3].gout[5] --> DelayChannel --> client[5].gin[3];
+        client[3].out[7] --> DelayChannel --> client[7].in[3];
+        client[3].gout[7] --> DelayChannel --> client[7].gin[3];
+        client[3].out[2] --> DelayChannel --> client[2].in[3];
+        client[3].gout[2] --> DelayChannel --> client[2].gin[3];
+        client[4].out[5] --> DelayChannel --> client[5].in[4];
+        client[4].gout[5] --> DelayChannel --> client[5].gin[4];
+        client[4].out[6] --> DelayChannel --> client[6].in[4];
+        client[4].gout[6] --> DelayChannel --> client[6].gin[4];
+        client[4].out[8] --> DelayChannel --> client[8].in[4];
+        client[4].gout[8] --> DelayChannel --> client[8].gin[4];
+        client[4].out[3] --> DelayChannel --> client[3].in[4];
+        client[4].gout[3] --> DelayChannel --> client[3].gin[4];
+        client[5].out[6] --> DelayChannel --> client[6].in[5];
+        client[5].gout[6] --> DelayChannel --> client[6].gin[5];
+        client[5].out[7] --> DelayChannel --> client[7].in[5];
+        client[5].gout[7] --> DelayChannel --> client[7].gin[5];
+        client[5].out[0] --> DelayChannel --> client[0].in[5];
+        client[5].gout[0] --> DelayChannel --> client[0].gin[5];
+        client[5].out[4] --> DelayChannel --> client[4].in[5];
+        client[5].gout[4] --> DelayChannel --> client[4].gin[5];
+        client[6].out[7] --> DelayChannel --> client[7].in[6];
+        client[6].gout[7] --> DelayChannel --> client[7].gin[6];
+        client[6].out[8] --> DelayChannel --> client[8].in[6];
+        client[6].gout[8] --> DelayChannel --> client[8].gin[6];
+        client[6].out[1] --> DelayChannel --> client[1].in[6];
+        client[6].gout[1] --> DelayChannel --> client[1].gin[6];
+        client[6].out[5] --> DelayChannel --> client[5].in[6];
+        client[6].gout[5] --> DelayChannel --> client[5].gin[6];
+        client[7].out[8] --> DelayChannel --> client[8].in[7];
+        client[7].gout[8] --> DelayChannel --> client[8].gin[7];
+        client[7].out[0] --> DelayChannel --> client[0].in[7];
+        client[7].gout[0] --> DelayChannel --> client[0].gin[7];
+        client[7].out[2] --> DelayChannel --> client[2].in[7];
+        client[7].gout[2] --> DelayChannel --> client[2].gin[7];
+        client[7].out[6] --> DelayChannel --> client[6].in[7];
+        client[7].gout[6] --> DelayChannel --> client[6].gin[7];
+        client[8].out[0] --> DelayChannel --> client[0].in[8];
+        client[8].gout[0] --> DelayChannel --> client[0].gin[8];
+        client[8].out[1] --> DelayChannel --> client[1].in[8];
+        client[8].gout[1] --> DelayChannel --> client[1].gin[8];
+        client[8].out[3] --> DelayChannel --> client[3].in[8];
+        client[8].gout[3] --> DelayChannel --> client[3].gin[8];
+        client[8].out[7] --> DelayChannel --> client[7].in[8];
+        client[8].gout[7] --> DelayChannel --> client[7].gin[8];
 }
-

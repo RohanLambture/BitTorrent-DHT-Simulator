@@ -109,7 +109,82 @@ This project simulates remote program execution using the OMNeT++ Discrete Event
 
 - `README.md`: This comprehensive documentation file.
 - `Makefile`: Contains the build instructions for compiling the simulation project.
-- `topo.txt`: Defines the network topology.
+- `topo.txt`: Defines the network topology configuration parameters.
 - Source code files (e.g., `*.cc` and `*.h`) that implement the simulation logic.
 - OMNeT++ NED files (e.g., `*.ned`) that define the network topology or enable dynamic module creation.
 - The `config.py` file, which dynamically generates the NED file based on the network topology specified in topo.txt.
+
+## Network Configuration
+
+### topo.txt
+
+The `topo.txt` file is a simple configuration file that defines key network parameters:
+
+```
+num_clients = 9
+task_sizes = "5,5"
+delay = 100
+```
+
+- **num_clients**: Specifies the number of client nodes in the network (default: 10)
+- **task_sizes**: Defines the sizes of tasks to be processed in the simulation (default: "4,5")
+- **delay**: Sets the communication delay between nodes in milliseconds (default: 100)
+
+### config.py
+
+The `config.py` script automatically generates the `Network.ned` file based on parameters specified in `topo.txt`. This approach allows for easy topology modifications without directly editing complex NED files.
+
+#### Key Features:
+
+- **Parameter Extraction**: Reads and parses the `topo.txt` file to extract network configuration parameters
+- **Chord Network Generation**: Creates connections between nodes following a Chord distributed hash table topology
+- **Dynamic NED Generation**: Produces the `Network.ned` file with all necessary node definitions and connections
+
+#### Usage:
+
+To update the network configuration:
+
+1. Modify the parameters in `topo.txt` as needed
+2. Run the Python script:
+   ```bash
+   python config.py
+   ```
+3. The script will generate a new `Network.ned` file with your updated configuration
+4. Compile and run the simulation with the new network topology
+
+#### Default Values:
+
+If the `topo.txt` file is missing or parameters are not specified, the following defaults are used:
+- Number of clients: 10
+- Task sizes: "4,5"
+- Connection delay: 100ms
+
+## Compilation and Execution Instructions
+
+### Prerequisites
+
+- *OMNeT++ Installation:*  
+  Ensure that OMNeT++ is installed on your system. For installation instructions, please refer to the [OMNeT++ Install Guide](https://doc.omnetpp.org/omnetpp/InstallGuide.pdf).
+
+- *C++ Compiler:*  
+  A compatible C++ compiler is required to build the simulation project.
+
+- *Python:*  
+  Python is required to run the provided configuration script.
+
+- *Environment Setup:*  
+  Configure the necessary environment variables for OMNeT++.
+
+### Steps to Compile and Run the Simulation
+
+1. Open a terminal and navigate to the OMNeT++ installation root directory.
+2. Launch OMNeT++ by executing:
+   bash
+   omnetpp
+   
+3. Within the OMNeT++ IDE, select the CNAssignment2 project.
+4. Update the network topology in the topo.txt file as needed, and run the provided Python script (e.g., config.py) to generate the Network.ned file:
+   bash
+   python config.py
+   
+5. Finally, start the simulation by executing the omnetpp.ini file, which initiates the simulation process.

@@ -15,11 +15,10 @@ public:
     std::vector<int> originalVector;
     std::vector<int> selectedPeerIds;
     std::map<int, std::map<int, int>> peerResponses; // map of subtaskId and peerId and result
-    std::vector<float> peerScores;
     std::map<int, int> subtaskResult;
     int subTask = 0;
     int responses = 0;
-    bool scoresAlreadySent = false;
+    bool taskCompleted = false; // Renamed from scoresAlreadySent
     int currentTask = 0;
     std::vector<int> taskSizeList;
     std::vector<int> fingerTable;  // CHORD finger table
@@ -35,10 +34,7 @@ public:
         // Get basic parameters
         numClients = par("numClients");
 
-        // Initialize peer score vector
-        peerScores.resize(numClients, 0);
-
-        // Initialize finger table for CserverHORD routing
+        // Initialize finger table for CHORD routing
         initializeFingerTable();
 
         // Extract the taskSizes array parameter
@@ -143,14 +139,6 @@ public:
             return;
         }
 
-        // Check if this is a gossip message
-        gossipMessage *gossipMsg = dynamic_cast<gossipMessage *>(msg);
-        if (gossipMsg)
-        {
-            handleGossipMessage(gossipMsg);
-            return;
-        }
-
         // Check if it's time to start a new task
         if (strcmp(msg->getName(), "startNewTask") == 0)
         {
@@ -160,7 +148,7 @@ public:
         }
 
         // Schedule the next task if we've finished current one
-        if (scoresAlreadySent && currentTask < int(taskSizeList.size()) - 1)
+        if (taskCompleted && currentTask < int(taskSizeList.size()) - 1)
         {
             if (logFile.is_open())
                 logFile << "Client " << getIndex() << " finished current task, ready for next" << endl;
@@ -207,11 +195,14 @@ public:
         responses++;
 
         // Check if we've received all responses
-        if (responses == subTask && !scoresAlreadySent)
+        if (responses == subTask && !taskCompleted)
         {
             processResponses();
-            sendScores();
-            scoresAlreadySent = true;
+            taskCompleted = true;
+            
+            // Schedule the next task
+            cMessage *newTaskMsg = new cMessage("startNewTask");
+            scheduleAt(simTime() + 1.0, newTaskMsg);
         }
 
         delete msg;
@@ -274,22 +265,6 @@ public:
         // Send response back to the requesting peer via next hop
         send(response, "out", nextHop);
         
-        delete msg;
-    }
-
-    void handleGossipMessage(gossipMessage *msg)
-    {
-        for (int i = 0; i < msg->serverScores.size() && i < peerScores.size(); i++)
-        {
-            peerScores[i] += msg->serverScores[i];
-        }
-
-        if (logFile.is_open())
-            logFile << msg->currentTime << " Client " << getIndex()
-                    << " : Received gossip message from client " << msg->sourceClientId << endl;
-
-        EV << "Updated peer scores based on gossip from client " << msg->sourceClientId << endl;
-
         delete msg;
     }
 
@@ -446,19 +421,15 @@ public:
 
         EV << "Client " << getIndex() << " received responses from peers" << endl;
 
-        // Since we now send each subtask to only one peer instead of multiple peers
-        // We directly accept the result without voting
-        std::vector<int> peerScores(numClients, 0);
         int finalResult = 0;
 
-        // Process each subtask response
+        // Process each subtask response to find the maximum value
         for (auto &subtaskEntry : peerResponses)
         {
             int subtaskId = subtaskEntry.first;
             auto &responses = subtaskEntry.second;
 
             // Since we only have one response per subtask, directly use that
-            int peerId = responses.begin()->first;
             int result = responses.begin()->second;
 
             // Update the result for this subtask
@@ -468,129 +439,33 @@ public:
             if (result > finalResult) {
                 finalResult = result;
             }
-
-            // Assuming all peers are honest, give them a score of 1
-            peerScores[peerId] = 1;
         }
-        
-        if (logFile.is_open())
-        {
+
+        if (logFile.is_open()) {
             logFile << "Client " << getIndex() << " received responses from peers" << endl;
-            logFile << "Client " << getIndex() << " peer scores: ";
-        }
-
-        EV << "Client " << getIndex() << " received responses from peers" << endl;
-        EV << "Client " << getIndex() << " peer scores: ";
-
-        for (int i = 0; i < peerScores.size(); i++)
-        {
-            this->peerScores[i] = float(peerScores[i]) / subTask;
-
-            if (logFile.is_open())
-                logFile << this->peerScores[i] << ", ";
-
-            EV << peerScores[i] << ", ";
-        }
-
-        if (logFile.is_open())
-            logFile << endl;
-
-        EV << endl;
-
-        // Calculate final result
-        if (logFile.is_open())
             logFile << "Client " << getIndex() << " final result: " << finalResult << endl;
+        }
 
         EV << "Client " << getIndex() << " final result: " << finalResult << endl;
     }
 
-    void sendScores()
-    {
-        if (logFile.is_open())
-            logFile << "Client " << getIndex() << " sending scores to other clients" << endl;
-
-        EV << "Client " << getIndex() << " sending scores to other clients" << endl;
-
-        for (int i = 0; i < numClients; i++)
-        {
-            if (i == getIndex())
-                continue;
-
-            gossipMessage *msgToClient = new gossipMessage();
-            msgToClient->sourceClientId = getIndex();
-            msgToClient->destClientId = i;
-            msgToClient->serverScores = this->peerScores; // Reusing the serverScores field
-            msgToClient->currentTime = simTime();
-
-            // Use CHORD routing for gossip messages too
-            int nextHop = findNextHop(i);
-            msgToClient->isRouting = nextHop != i;
-            
-            send(msgToClient, "gout", nextHop);
-
-            if (logFile.is_open())
-                logFile << "Client " << getIndex() << " sent peer scores to client " << i
-                        << " via hop " << nextHop << endl;
-
-            EV << "Sent peer scores from client " << getIndex() << " to client " << i
-               << " via hop " << nextHop << endl;
-        }
-    }
-
     void startNewTask()
     {
-        responses = 0;
-        subTask = 0;
-        scoresAlreadySent = false;
-        peerResponses.clear();
-        subtaskResult.clear();
-
-        if (logFile.is_open())
-            logFile << "Client " << getIndex() << " is starting a new task" << endl;
-
-        EV << "Client " << getIndex() << " is starting a new task" << endl;
-
-        currentTask = currentTask + 1;
-        // Generate a vector with enough elements to ensure at least 2 per subtask
-        int taskSize = taskSizeList[currentTask];
-        // Ensure size is large enough to have at least 2 elements per client
-        if (taskSize < numClients * 2)
+        if (currentTask < taskSizeList.size() - 1)
         {
-            taskSize = numClients * 2;
+            currentTask++;
+            responses = 0;
+            taskCompleted = false;
+            peerResponses.clear();
+            subtaskResult.clear();
+
+            originalVector = generateRandomVector(taskSizeList[currentTask]);
+            
+            // Select peers for this task without using peer scores
+            selectedPeerIds = selectPeers(); 
+            
+            sendSubTasks();
         }
-        originalVector = generateRandomVector(taskSize);
-
-        EV << "Client " << getIndex() << " generated task of size " << originalVector.size() << endl;
-
-        sendSubTasks();
-    }
-
-    std::vector<int> selectTopPeers()
-    {
-        std::vector<std::pair<float, int>> peerRanking;
-        for (int i = 0; i < peerScores.size(); i++)
-        {
-            if (i != getIndex())
-            { // Don't include self
-                peerRanking.push_back({peerScores[i], i});
-            }
-        }
-
-        std::sort(peerRanking.begin(), peerRanking.end(),
-                  [](const std::pair<float, int> &a, const std::pair<float, int> &b)
-                  {
-                      return a.first > b.first;
-                  });
-
-        std::vector<int> topPeers;
-        int peersToSelect = (numClients) / 2;
-
-        for (int i = 0; i < peerRanking.size() && i < peersToSelect; i++)
-        {
-            topPeers.push_back(peerRanking[i].second);
-        }
-
-        return topPeers;
     }
 };
 

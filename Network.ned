@@ -29,22 +29,13 @@ simple ClientNode
 network Assignment2
 {
     parameters:
-//        int numServers = default(4);
         int numClients = default(10);
     
     types:
         channel DelayChannel extends ned.DelayChannel {
             delay = 100ms;
         }
-    
     submodules:
-//        server[numServers]: ServerNode {
-//            parameters:
-//                id = index;
-//                numClients = parent.numClients;
-//        }
-//        
-        // Define client vector with conditionals for task sizes
         client[numClients]: ClientNode {
             parameters:
                 id = index;
@@ -53,14 +44,23 @@ network Assignment2
         }
 
     connections allowunconnected:
-        // Gossip message connections between clients, avoiding duplicate connections:
-        for i=0..numClients-1, for j=i+1..numClients-1 {
-            //normal connections
-            client[i].out[j] --> DelayChannel --> client[j].in[i];
-            client[j].out[i] --> DelayChannel --> client[i].in[j];
+        // Connect each node to its fingers using explicit indices
+        for i=0..numClients-1 {
+            // Successor (first finger)
+            client[i].out[(i+1)%numClients] --> DelayChannel --> client[(i+1)%numClients].in[i];
+            client[i].gout[(i+1)%numClients] --> DelayChannel --> client[(i+1)%numClients].gin[i];
             
+            // Second finger (i+2)
+            client[i].out[(i+2)%numClients] --> DelayChannel --> client[(i+2)%numClients].in[i];
+            client[i].gout[(i+2)%numClients] --> DelayChannel --> client[(i+2)%numClients].gin[i];
             
-            client[i].gout[j] --> DelayChannel --> client[j].gin[i];
-            client[j].gout[i] --> DelayChannel --> client[i].gin[j];
+            // Third finger (i+4)
+            client[i].out[(i+4)%numClients] --> DelayChannel --> client[(i+4)%numClients].in[i];
+            client[i].gout[(i+4)%numClients] --> DelayChannel --> client[(i+4)%numClients].gin[i];
+            
+            // Fourth finger (i+8)
+            client[i].out[(i+8)%numClients] --> DelayChannel --> client[(i+8)%numClients].in[i];
+            client[i].gout[(i+8)%numClients] --> DelayChannel --> client[(i+8)%numClients].gin[i];
         }
 }
+

@@ -1,5 +1,4 @@
-# Authors : B22CS081 B22CS030
-# Computer Network Assignment-3: P2P Program Execution Simulation using OMNeT++
+# P2P Program Execution Simulation using OMNeT++
 
 ## Overview
 
